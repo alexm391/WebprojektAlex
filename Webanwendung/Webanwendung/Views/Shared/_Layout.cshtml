@@ -9,8 +9,54 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-        @RenderBody()
-       
+    <header>
+        <nav class="navbar-inverse navbar-default navbar-fixed-top">
+            <div class="dropdown" id="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" id="buttonMenu">
+                    Menü
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="#myPage">Startseite</a></li>
+                    <li><a href="#band">Anmelden</a></li>
+                    <li><a href="#tour">Registrieren</a></li>
+                    <li><a href="#aboutme">Zimmer buchen</a></li>
+                </ul>
+            </div>
+            <div class="navbar-collapse" id="myNavbar1">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="#myPage">Mein Profil</a></li>
+                </ul>
+            </div>
+            <div class="navbar-collapse" id="myNavbar2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#myPage">Startseite</a></li>
+                    <li><a href="#band">Anmelden</a></li>
+                    <li><a href="#tour">Registrieren</a></li>
+                    <li><a href="#aboutme">Zimmer buchen</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        @*<nav>
+                @Html.Partial("Navigation")
+            </nav>*@
+
+        <content>
+            @RenderBody()
+        </content>
+    </main>
+
+    <footer>
+        <ul>
+            <li><a href="#myPage">Impressum</a></li>
+            <li><a href="#myPage">Kontakt</a></li>
+        </ul>
+    </footer>
+
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

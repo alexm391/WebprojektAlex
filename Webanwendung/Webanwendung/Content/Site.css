@@ -1,24 +1,100 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    height: 100%;
+    width: 100%;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+html{
+    height: 96%;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+main {
+    height: 75%;
+    width: 100%;
+    /*margin-top: 5%;*/
+    /*border: 1px solid black;*/
+    /*background-color: lightgray;*/
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+header {
+    height: 15%;
+    width: 100%;
+    font-size: 90%;
+    /*position: fixed;*/
+    top: 0;
+    /*border: 1px solid black;*/
 }
+
+header ul {
+    list-style-type: none;
+    padding-left: 2%;
+}
+
+header a:hover {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+content {
+    clear: both;
+    width: 100%;
+    /*float: left;*/
+    /*padding: 0px 10px 10px 10px;*/
+    /*border: 1px solid black;*/
+}
+
+footer {
+    height: 10%;
+    width: 100%;
+    text-align: left;
+    border: 1px solid black;
+}
+
+footer a:hover {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+ul{
+    list-style-type: none;
+}
+#dropdown{
+    float: right;
+    height: 15%;
+    display: none;
+}
+
+#buttonMenu{
+    height:inherit;
+}
+
+@media (max-width: 800px){
+    #myNavbar2 {
+        display: none;
+        /*background-color:red;*/
+    }
+    body{
+        /*background-color:blue;*/
+    }
+    #dropdown{
+        display: inline;
+    }
+}
+
+#myNavbar1{
+    float: left;
+    width: 25%;
+}
+
+#myNavbar2{
+    float: right;
+    width: 75%;
+}
+
+#myNavbar1, #myNavbar2{
+    /*background-color:black;*/   
+}
+
+
+
+
+
