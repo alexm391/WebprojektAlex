@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-html{
+html {
     height: 96%;
 }
 
@@ -46,7 +46,7 @@ footer {
     height: 10%;
     width: 100%;
     text-align: left;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 footer a:hover {
