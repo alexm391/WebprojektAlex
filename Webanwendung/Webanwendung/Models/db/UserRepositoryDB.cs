@@ -10,7 +10,7 @@ namespace Webanwendung.Models.db
 {
     public class UserRepositoryDB : IUserRepository
     {
-        private string _connectionString = "Server=localhost;Database=webProject;Uid=root;Pwd=iscoregoals"; // pw isg
+        private string _connectionString = "Server=localhost;Database=webProject;Uid=root;Pwd=iscoregoals"; 
         private MySqlConnection _connection;
 
         public void Open()
@@ -44,7 +44,7 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "INSERT into users values(null, @firstname, @lastname, @birthdate, @gender, @username, @email, sha1(@pwd))";
+                cmd.CommandText = "INSERT into users values(null, @firstname, @lastname, @birthdate, @gender, @username, @email, sha1(@pwd), false)";
                 cmd.Parameters.AddWithValue("firstname", userToInsert.Firstname);
                 cmd.Parameters.AddWithValue("lastname", userToInsert.Lastname);
                 cmd.Parameters.AddWithValue("birthdate", userToInsert.Birthdate);

@@ -37,11 +37,11 @@ namespace Webanwendung.Controllers
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
                     userRepository.Insert(userDataForm);
-                    return View("Index");
+                    return View("Message", new Message("Registrierung", "Sie wurden erfolgreich registriert"));
                 }
                 catch(Exception ex)
                 {
-                    return View("Index");
+                    return View("Message", new Message("Registrierung", "Sie konnten nicht registriert werden", "Versuchen Sie es später nocheinmal"));
                 }
                 finally
                 {
@@ -64,7 +64,7 @@ namespace Webanwendung.Controllers
             {
                 ModelState.AddModelError("Lastname", "Der Nachname muss mindestens 3 Zeichen lang sein");
             }
-            if(user.Birthdate < DateTime.Now)
+            if(user.Birthdate > DateTime.Now)
             {
                 ModelState.AddModelError("Birthdate", "Bitte Geburtsdatum angeben");
             }
@@ -80,10 +80,14 @@ namespace Webanwendung.Controllers
             {
                 ModelState.AddModelError("Email", "Bitte Email-Adresse angeben");
             }
-            if ((user.Password == null) || (user.Password.Length < 8)
+            if((user.Password == null) || (user.Password.Length < 8)
                     || (user.Password.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
             {
                 ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
+            }
+            if(user.PasswordConfirmation != user.Password)
+            {
+                ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
             }
         }
     }

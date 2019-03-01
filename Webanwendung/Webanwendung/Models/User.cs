@@ -24,11 +24,12 @@ namespace Webanwendung.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string PasswordConfirmation { get; set; }
         public UserRole UserRole { get; set; }
 
-        public User() : this(-1, "", "", null, Gender.notSpecified, "", "", "", UserRole.noUser) { }
+        public User() : this(-1, "", "", null, Gender.notSpecified, "", "", "", "", UserRole.noUser) { }
         public User(int id, string firstname, string lastname, DateTime? birthdate, Gender gender, string username, string email, 
-            string password, UserRole userRole)
+            string password, string passwordConfirmation ,UserRole userRole)
         {
             this.ID = id;
             this.Firstname = firstname;
@@ -38,6 +39,7 @@ namespace Webanwendung.Models
             this.Username = username;
             this.Email = email;
             this.Password = password;
+            this.PasswordConfirmation = passwordConfirmation;
             this.UserRole = userRole;
         }
 

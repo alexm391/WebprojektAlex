@@ -1,0 +1,25 @@
+﻿@model Webanwendung.Models.Message
+
+
+@if (Model != null)
+{
+    if (Model.Header != null)
+    {
+        <h3>@Model.Header</h3>
+    }
+    if (Model.MessageText != null)
+    {
+        <p>@Model.MessageText</p>
+    }
+    if ((Model.Solution != null) && (Model.Solution.Trim() != ""))
+    {
+        <p>@Model.Solution</p>
+    }
+
+}
+else
+{
+    <p>
+        Fehler beim Anzeigen der Nachricht.
+    </p>
+}

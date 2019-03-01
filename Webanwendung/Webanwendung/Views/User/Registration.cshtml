@@ -46,6 +46,10 @@
                 <td>@Html.PasswordFor(u => u.Password)</td>
             </tr>
             <tr>
+                <td>@Html.LabelFor(u => u.PasswordConfirmation, "Passwort Wiederholen *")</td>
+                <td>@Html.PasswordFor(u => u.PasswordConfirmation)</td>
+            </tr>
+            <tr>
                 <td colspan="2" class="center">
                     <input type="submit" value="absenden" />
                     <input type="reset" value="abrechen" />
