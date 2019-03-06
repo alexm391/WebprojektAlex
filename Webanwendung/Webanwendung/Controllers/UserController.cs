@@ -19,7 +19,6 @@ namespace Webanwendung.Controllers
             User u = new User(); 
             return View(u);
         }
-
         [HttpPost]
         public ActionResult Registration(User userDataForm)
         {
@@ -28,7 +27,7 @@ namespace Webanwendung.Controllers
                 return RedirectToAction("Registration");
             }
 
-            ValidateRegistration(userDataForm);
+            ValidateRegistration(userDataForm, true);
 
             if (ModelState.IsValid)
             {
@@ -54,7 +53,64 @@ namespace Webanwendung.Controllers
             }
         }
 
-        private void ValidateRegistration(User user)
+        [HttpGet]
+        public ActionResult Login()
+        {
+            Login l = new Login();
+            return View(l);
+
+        }
+        [HttpPost]
+        public ActionResult Login(Login loginDataForm)
+        {
+            if(loginDataForm == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            try
+            {
+                userRepository = new UserRepositoryDB();
+                userRepository.Open();
+                User user = userRepository.Authenticate(loginDataForm);
+
+                if(user != null)
+                {
+                    if (user.UserRole == UserRole.admin)
+                    {
+                        Session["isAdmin"] = true;
+                        Session["name"] = user.Firstname;
+                        //Session["id"] = user.ID;
+                    }
+                    else
+                    {
+                        Session["isAdmin"] = false;
+                        Session["name"] = user.Firstname + " " + user.Lastname;
+                        //Session["id"] = user.ID;
+                    }
+                    return View("Message", new Message("Anmeldung", "Sie wurden erfolgreich angemeldet"));
+
+                }
+                else
+                {
+                    ModelState.AddModelError("Password", "Benutzername/Passwort Kombination ist falsch");
+                    return View(loginDataForm);
+                }
+
+            }
+            catch(Exception ex)
+            {
+                return View("Message", new Message("Anmeldung", "Es bei der Anmeldung einen Fehler", "Versuchen Sie es später nocheinmal"));
+            }
+            finally
+            {
+                userRepository.Close();
+            }
+        }
+
+
+
+        private void ValidateRegistration(User user, bool pwd)
         {
             if((user.Firstname != null) && (user.Firstname.Trim().Length < 3))
             {
@@ -80,15 +136,20 @@ namespace Webanwendung.Controllers
             {
                 ModelState.AddModelError("Email", "Bitte Email-Adresse angeben");
             }
-            if((user.Password == null) || (user.Password.Length < 8)
-                    || (user.Password.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
+            if (pwd)
             {
-                ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
-            }
-            if(user.PasswordConfirmation != user.Password)
-            {
-                ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
+                if ((user.Password == null) || (user.Password.Length < 8)
+                        || (user.Password.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
+                {
+                    ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
+                }
+                if (user.PasswordConfirmation != user.Password)
+                {
+                    ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
+                }
             }
         }
+
+
     }
 }

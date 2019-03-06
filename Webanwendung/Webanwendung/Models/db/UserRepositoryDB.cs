@@ -74,7 +74,7 @@ namespace Webanwendung.Models.db
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
                 cmd.CommandText = "select * from users where ((passwrd = sha1(@password)) AND (username = @emailOrUsername) OR ((passwrd = sha1(@password)) AND (email = @emailOrUsername)))";
-                cmd.Parameters.AddWithValue("username", login.UsernameOrEmail);
+                cmd.Parameters.AddWithValue("emailOrUsername", login.UsernameOrEmail);
                 cmd.Parameters.AddWithValue("password", login.Password);
 
                 using(MySqlDataReader reader = cmd.ExecuteReader())

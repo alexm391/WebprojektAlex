@@ -1,0 +1,41 @@
+﻿@model Webanwendung.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <thead>
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationSummary()
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.LabelFor(l => l.UsernameOrEmail, "Username oder Email")</td>
+                <td>@Html.TextBoxFor(l => l.UsernameOrEmail)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(l => l.Password, "Passwort")</td>
+                <td>@Html.PasswordFor(l => l.Password)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <input type="submit" value="einloggen" />
+                    <input type="reset" value="abrechen" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+}
