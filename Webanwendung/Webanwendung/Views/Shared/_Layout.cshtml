@@ -31,15 +31,39 @@
             <div class="navbar-collapse" id="myNavbar2">
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Startseite", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Anmelden", "Login", "User")</li>
-                    <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
-                    <li><a href="#aboutme">Zimmer buchen</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+                    <li>
+                        @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+                        {
+                            @Html.ActionLink("Abmelden", "Logout", "User")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Anmelden", "Login", "User")
+                        }
+                    </li>
 
-    <main>
+
+                        <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
+
+
+                        <li><a href="#aboutme">Zimmer buchen</a></li>
+
+
+                    </ul>
+
+
+                </div>
+
+
+            </nav>
+
+
+        </header>
+
+
+
+        <main>
         @*<nav>
                 @Html.Partial("Navigation")
             </nav>*@

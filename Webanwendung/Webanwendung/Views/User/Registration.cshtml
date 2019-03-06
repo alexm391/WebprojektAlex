@@ -22,7 +22,7 @@
                 <td>@Html.TextBoxFor(u => u.Firstname)</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(u => u.Lastname, "Nachname *")</td>
+                <td>@Html.LabelFor(u => u.Lastname, "Nachname")</td>
                 <td>@Html.TextBoxFor(u => u.Lastname)</td>
             </tr>
             <tr>
@@ -34,19 +34,19 @@
                 <td>@Html.EnumDropDownListFor(u => u.Gender)</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(u => u.Username, "Benutzername *")</td>
+                <td>@Html.LabelFor(u => u.Username, "Benutzername")</td>
                 <td>@Html.TextBoxFor(u => u.Username)</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(u => u.Email, "email-Adresse *")</td>
+                <td>@Html.LabelFor(u => u.Email, "email-Adresse")</td>
                 <td>@Html.TextBoxFor(u => u.Email, new { type = "email" })</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(u => u.Password, "Passwort *")</td>
+                <td>@Html.LabelFor(u => u.Password, "Passwort")</td>
                 <td>@Html.PasswordFor(u => u.Password)</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(u => u.PasswordConfirmation, "Passwort Wiederholen *")</td>
+                <td>@Html.LabelFor(u => u.PasswordConfirmation, "Passwort Wiederholen")</td>
                 <td>@Html.PasswordFor(u => u.PasswordConfirmation)</td>
             </tr>
             <tr>
@@ -56,11 +56,6 @@
                 </td>
             </tr>
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="2">* ... Pflichtfelder</td>
-            </tr>
-        </tfoot>
     </table>
 
 
