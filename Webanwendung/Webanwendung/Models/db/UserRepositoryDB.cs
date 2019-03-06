@@ -111,5 +111,34 @@ namespace Webanwendung.Models.db
                 throw;
             }
         }
+
+        public bool ChangeUserData(int userIdToChange, User newUserData)
+        {
+            if((userIdToChange == 0) || (newUserData == null))
+            {
+                return false;
+            }
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "UPDATE users SET firstname = @firstname, lastname = @lastname, birthdate = @birthdate, gender = @gender, username = @username, email = @email where id = @id";
+                cmd.Parameters.AddWithValue("firstname", newUserData.Firstname);
+                cmd.Parameters.AddWithValue("lastname", newUserData.Lastname);
+                cmd.Parameters.AddWithValue("birthdate", newUserData.Birthdate);
+                cmd.Parameters.AddWithValue("gender", newUserData.Gender);
+                cmd.Parameters.AddWithValue("username", newUserData.Username);
+                cmd.Parameters.AddWithValue("email", newUserData.Email);
+                cmd.Parameters.AddWithValue("id", userIdToChange);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+
+        }
     }
 }
