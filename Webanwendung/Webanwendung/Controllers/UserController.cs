@@ -119,6 +119,8 @@ namespace Webanwendung.Controllers
         }
 
 
+
+
         private void ValidateRegistration(User user, bool pwd)
         {
             if((user.Firstname == null) || (user.Firstname.Trim().Length < 3))

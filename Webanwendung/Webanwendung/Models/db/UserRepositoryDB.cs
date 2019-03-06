@@ -132,6 +132,7 @@ namespace Webanwendung.Models.db
                 cmd.Parameters.AddWithValue("id", userIdToChange);
 
                 return cmd.ExecuteNonQuery() == 1;
+
             }
             catch (Exception ex)
             {
@@ -139,6 +140,47 @@ namespace Webanwendung.Models.db
             }
 
 
+        }
+
+        public User GetUser(int userIdToGet)
+        {
+            if(userIdToGet == 0)
+            {
+                return null;
+            }
+
+            User user;
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "SELECT * FROM users where id = @id";
+                cmd.Parameters.AddWithValue("id", userIdToGet);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        user = new User
+                        {
+                            ID = Convert.ToInt32(reader["id"]),
+                            Firstname = Convert.ToString(reader["firstname"]),
+                            Lastname = Convert.ToString(reader["lastname"]),
+                            Birthdate = reader["birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["birthdate"]) : (DateTime?)null,
+                            Gender = (Gender)Convert.ToInt32(reader["gender"]),
+                            Username = Convert.ToString(reader["username"]),
+                            Email = Convert.ToString(reader["email"]),
+                        };
+                        return user;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
