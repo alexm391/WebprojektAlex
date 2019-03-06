@@ -11,6 +11,7 @@ namespace Webanwendung.Models.db
         void Open();
         void Close();
         bool Insert(User userToInsert);
+        User Authenticate(Login login);
 
     }
 }
