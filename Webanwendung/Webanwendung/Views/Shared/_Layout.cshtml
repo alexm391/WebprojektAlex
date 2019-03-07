@@ -17,15 +17,31 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#myPage">Startseite</a></li>
-                    <li><a href="#band">Anmelden</a></li>
-                    <li><a href="#tour">Registrieren</a></li>
+                    <li>@Html.ActionLink("Startseite", "Index", "Home")</li>
+                    <li>
+                        @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+                        {
+                            @Html.ActionLink("Abmelden", "Logout", "User")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Anmelden", "Login", "User")
+                        }
+                    </li>
+                    <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
                     <li><a href="#aboutme">Zimmer buchen</a></li>
                 </ul>
             </div>
             <div class="navbar-collapse" id="myNavbar1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#myPage">Mein Profil</a></li>
+                    <li>
+                        @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+                        {
+                            @Html.ActionLink("" + Session["name"], "ChangeUserData", "User", new { userId = Session["userID"] } , null)
+                        }
+                    </li>
                 </ul>
             </div>
             <div class="navbar-collapse" id="myNavbar2">
@@ -42,35 +58,21 @@
                             @Html.ActionLink("Anmelden", "Login", "User")
                         }
                     </li>
+                    <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
+                    <li><a href="#aboutme">Zimmer buchen</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-
-                        <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
-
-
-                        <li><a href="#aboutme">Zimmer buchen</a></li>
-
-
-                    </ul>
-
-
-                </div>
-
-
-            </nav>
-
-
-        </header>
-
-
-
-        <main>
+    <main>
         @*<nav>
                 @Html.Partial("Navigation")
             </nav>*@
 
-        <content>
-            @RenderBody()
-        </content>
+     <content>
+        @RenderBody()
+    </content>
     </main>
 
     <footer>

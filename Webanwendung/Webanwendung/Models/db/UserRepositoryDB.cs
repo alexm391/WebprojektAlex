@@ -84,7 +84,7 @@ namespace Webanwendung.Models.db
                         reader.Read();
                         user = new User
                         {
-                            ID = Convert.ToInt32(reader["ID"]),
+                            ID = Convert.ToInt32(reader["id"]),
                             Firstname = Convert.ToString(reader["firstname"]),
                             Lastname = Convert.ToString(reader["lastname"]),
                             Birthdate = reader["birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["birthdate"]) : (DateTime?)null,

@@ -1,0 +1,61 @@
+﻿@model Webanwendung.Models.User
+
+@{
+    ViewBag.Title = "ChangeUserData";
+}
+
+<h2>ChangeUserData</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <thead>
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationSummary()
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.LabelFor(u => u.Firstname, "Vorname")</td>
+                <td>@Html.TextBoxFor(u => u.Firstname)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(u => u.Lastname, "Nachname")</td>
+                <td>@Html.TextBoxFor(u => u.Lastname)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(u => u.Birthdate, "Geburtsdatum")</td>
+                <td>@Html.TextBoxFor(u => u.Birthdate, new { type = "date" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(u => u.Gender, "Geschlecht")</td>
+                <td>@Html.EnumDropDownListFor(u => u.Gender)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(u => u.Username, "Benutzername")</td>
+                <td>@Html.TextBoxFor(u => u.Username)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(u => u.Email, "email-Adresse")</td>
+                <td>@Html.TextBoxFor(u => u.Email, new { type = "email" })</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <input type="submit" value="absenden" />
+                    <input type="reset" value="abrechen" />
+                </td>
+            </tr>
+            <tr>
+                @Html.ActionLink("Passwort ändern", "ChangePassword" + "/" + @Session["id"], "User")
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+}
+

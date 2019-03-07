@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Webanwendung.Models;
 using Webanwendung.Models.db;
+using MySql.Data.MySqlClient;
+
 
 namespace Webanwendung.Controllers
 {
@@ -27,7 +29,8 @@ namespace Webanwendung.Controllers
                 return RedirectToAction("Registration");
             }
 
-            ValidateRegistration(userDataForm, true);
+            ValidateData(userDataForm);
+            ValidatePassword(userDataForm);
 
             if (ModelState.IsValid)
             {
@@ -80,13 +83,13 @@ namespace Webanwendung.Controllers
                     {
                         Session["isAdmin"] = true;
                         Session["name"] = user.Firstname;
-                        //Session["id"] = user.ID;
+                        Session["userID"] = user.ID;
                     }
                     else
                     {
                         Session["isRegisteredUser"] = true;
                         Session["name"] = user.Firstname + " " + user.Lastname;
-                        //Session["id"] = user.ID;
+                        Session["userID"] = user.ID;
                     }
                     return View("Message", new Message("Anmeldung", "Sie wurden erfolgreich angemeldet"));
 
@@ -113,15 +116,69 @@ namespace Webanwendung.Controllers
             Session["isAdmin"] = null;
             Session["isRegisteredUser"] = null; 
             Session["name"] = null;
-            //Session["id"] = null;
+            Session["userID"] = null;
             return View("Message", new Message("Abmeldung", "Sie wurden erfolgreich abgemeldet"));
 
+        }
+
+        [HttpGet]
+        public ActionResult ChangeUserData(int userId)
+        {
+            try
+            {
+                userRepository = new UserRepositoryDB();
+                userRepository.Open();
+                User user = userRepository.GetUser(userId);
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                return View("Message", new Message("Datenänderung", "Es gab eine Fehler bei der Datenänderung"));
+            }
+            finally
+            {
+                userRepository.Close();
+            }
+        }
+        [HttpPost]
+        public ActionResult ChangeUserData(int userId, User newUserDataForm)
+        {
+            if(newUserDataForm == null)
+            {
+                return RedirectToAction("ChangeUserData(userId)");
+            }
+
+            ValidateData(newUserDataForm);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    userRepository = new UserRepositoryDB();
+                    userRepository.Open();
+                    userRepository.ChangeUserData(userId, newUserDataForm);
+                    Session["name"] = newUserDataForm.Firstname + " " + newUserDataForm.Lastname;
+                    return View("Message", new Message("Datenänderung", "Die Daten wurden erfolgreich geändert"));
+                }
+                catch (Exception ex)
+                {
+                    return View("Message", new Message("Datenänderung", "Die Daten konnten nicht geändert werden"));
+                }
+                finally
+                {
+                    userRepository.Close();
+                }
+            }
+            else
+            {
+                return RedirectToAction("ChangeUserData(userId, newUserDataForm)");
+            }
         }
 
 
 
 
-        private void ValidateRegistration(User user, bool pwd)
+        private void ValidateData(User user)
         {
             if((user.Firstname == null) || (user.Firstname.Trim().Length < 3))
             {
@@ -147,20 +204,19 @@ namespace Webanwendung.Controllers
             {
                 ModelState.AddModelError("Email", "Bitte Email-Adresse angeben");
             }
-            if (pwd)
-            {
-                if ((user.Password == null) || (user.Password.Length < 8)
+        }
+        private void ValidatePassword(User user)
+        {
+            if ((user.Password == null) || (user.Password.Length < 8)
                         || (user.Password.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
-                {
-                    ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
-                }
-                if (user.PasswordConfirmation != user.Password)
-                {
-                    ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
-                }
+            {
+                ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
+            }
+            if (user.PasswordConfirmation != user.Password)
+            {
+                ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
             }
         }
-
 
     }
 }
