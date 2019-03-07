@@ -51,7 +51,7 @@ namespace Webanwendung.Models.db
                 cmd.Parameters.AddWithValue("gender", userToInsert.Gender);
                 cmd.Parameters.AddWithValue("username", userToInsert.Username);
                 cmd.Parameters.AddWithValue("email", userToInsert.Email);
-                cmd.Parameters.AddWithValue("pwd", userToInsert.Password);
+                cmd.Parameters.AddWithValue("pwd", userToInsert.NewPassword);
 
                 return cmd.ExecuteNonQuery() == 1;
             }
@@ -141,18 +141,19 @@ namespace Webanwendung.Models.db
 
         }
 
-        public bool ChangePassword(int userIdToChange, string newPasword)
+        public bool? ChangePassword(int userIdToChange, User user)
         {
-            if((userIdToChange == 0) || (newPasword == ""))
+            if((userIdToChange == 0) || (user.NewPassword == ""))
             {
-                return false;
+                return null;
             }
 
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "UPDATE users SET passwrd = sha1(@password) where id = @id";
-                cmd.Parameters.AddWithValue("password", newPasword);
+                cmd.CommandText = "UPDATE users SET passwrd = sha1(@newPassword) where (id = @id) and (passwrd = sha1(@oldPassword))";
+                cmd.Parameters.AddWithValue("newPassword", user.NewPassword);
+                cmd.Parameters.AddWithValue("oldPassword", user.OldPassword);
                 cmd.Parameters.AddWithValue("id", userIdToChange);
 
                 return cmd.ExecuteNonQuery() == 1;

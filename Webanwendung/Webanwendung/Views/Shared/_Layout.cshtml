@@ -39,7 +39,7 @@
                         @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
                             ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
                         {
-                            @Html.ActionLink("" + Session["name"], "ChangeUserData", "User", new { userId = Session["userID"] } , null)
+                            @Html.ActionLink("" + Session["name"], "ChangeUserData", "User", new { userId = Session["id"] } , null)
                         }
                     </li>
                 </ul>

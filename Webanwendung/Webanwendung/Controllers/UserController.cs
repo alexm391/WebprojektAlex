@@ -83,13 +83,13 @@ namespace Webanwendung.Controllers
                     {
                         Session["isAdmin"] = true;
                         Session["name"] = user.Firstname;
-                        Session["userID"] = user.ID;
+                        Session["id"] = user.ID;
                     }
                     else
                     {
                         Session["isRegisteredUser"] = true;
                         Session["name"] = user.Firstname + " " + user.Lastname;
-                        Session["userID"] = user.ID;
+                        Session["id"] = user.ID;
                     }
                     return View("Message", new Message("Anmeldung", "Sie wurden erfolgreich angemeldet"));
 
@@ -116,7 +116,7 @@ namespace Webanwendung.Controllers
             Session["isAdmin"] = null;
             Session["isRegisteredUser"] = null; 
             Session["name"] = null;
-            Session["userID"] = null;
+            Session["id"] = null;
             return View("Message", new Message("Abmeldung", "Sie wurden erfolgreich abgemeldet"));
 
         }
@@ -184,6 +184,61 @@ namespace Webanwendung.Controllers
                 return RedirectToAction("ChangeUserData(userId, newUserDataForm)");
             }
         }
+        
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            User u = new User();
+            return View(u);
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(User newPasswordForm)
+        {
+            if (newPasswordForm == null)
+            {
+                return RedirectToAction("ChangePassword");
+            }
+
+            ValidatePassword(newPasswordForm);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    userRepository = new UserRepositoryDB();
+                    userRepository.Open();
+                    bool? newPwd = userRepository.ChangePassword(Convert.ToInt32(Session["id"]), newPasswordForm);
+                    if (newPwd == true)
+                    {
+                        return View("Message", new Message("Passwortänderung", "Das Passwort wurde erfolgreich geändert"));
+                    }
+                    else if(newPwd == false)
+                    {
+                        ModelState.AddModelError("NewPassword", "Das Passwort ist nicht richtig");
+                        return View();
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Passwortänderung", "Das Passwort konnte nicht geändert werden"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return View("Message", new Message("Passwortänderung", "Das Passwort konnte nicht geändert werden"));
+                }
+                finally
+                {
+                    userRepository.Close();
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
+ 
+        
+
 
 
 
@@ -217,14 +272,14 @@ namespace Webanwendung.Controllers
         }
         private void ValidatePassword(User user)
         {
-            if ((user.Password == null) || (user.Password.Length < 8)
-                        || (user.Password.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
+            if ((user.NewPassword == null) || (user.NewPassword.Length < 8)
+                        || (user.NewPassword.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
             {
-                ModelState.AddModelError("Password", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
+                ModelState.AddModelError("NewPassword", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
             }
-            if (user.PasswordConfirmation != user.Password)
+            if (user.PasswordConfirmation != user.NewPassword)
             {
-                ModelState.AddModelError("Password", "Die Passwörter stimmen nicht überein");
+                ModelState.AddModelError("NewPassword", "Die Passwörter stimmen nicht überein");
             }
         }
 

@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="center">
-                    <input type="submit" value="absenden" />
+                    <input type="submit" value="daten ändern" />
                     <input type="reset" value="abrechen" />
                 </td>
             </tr>
@@ -52,7 +52,7 @@
         <tfoot>
             <tr>
                 <td>
-                    @Html.ActionLink("Passwort ändern", "ChangePassword", "User", new { userId = Session["userID"] }, null)
+                    @Html.ActionLink("Passwort ändern", "ChangePassword", "User")
                 </td>
             </tr>      
         </tfoot>
