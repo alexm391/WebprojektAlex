@@ -156,9 +156,19 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    userRepository.ChangeUserData(userId, newUserDataForm);
-                    Session["name"] = newUserDataForm.Firstname + " " + newUserDataForm.Lastname;
-                    return View("Message", new Message("Datenänderung", "Die Daten wurden erfolgreich geändert"));
+                    if(userRepository.ChangeUserData(userId, newUserDataForm))
+                    {
+                        if((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
+                        {
+                            Session["name"] = newUserDataForm.Firstname + " " + newUserDataForm.Lastname;
+                        }
+                        return View("Message", new Message("Datenänderung", "Die Daten wurden erfolgreich geändert"));
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Datenänderung", "Die Daten konnten nicht geändert werden"));
+                    }
+
                 }
                 catch (Exception ex)
                 {

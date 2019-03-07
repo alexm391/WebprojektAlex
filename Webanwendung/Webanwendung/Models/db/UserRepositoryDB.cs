@@ -91,7 +91,6 @@ namespace Webanwendung.Models.db
                             Gender = (Gender)Convert.ToInt32(reader["gender"]),
                             Username = Convert.ToString(reader["username"]),
                             Email = Convert.ToString(reader["email"]),
-                            //Password = Convert.ToString(reader["passwrd"]),
                         };
                         if (Convert.ToBoolean(reader["isAdmin"]))
                         {
@@ -140,6 +139,28 @@ namespace Webanwendung.Models.db
             }
 
 
+        }
+
+        public bool ChangePassword(int userIdToChange, string newPasword)
+        {
+            if((userIdToChange == 0) || (newPasword == ""))
+            {
+                return false;
+            }
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "UPDATE users SET passwrd = sha1(@password) where id = @id";
+                cmd.Parameters.AddWithValue("password", newPasword);
+                cmd.Parameters.AddWithValue("id", userIdToChange);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         public User GetUser(int userIdToGet)

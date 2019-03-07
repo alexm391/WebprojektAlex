@@ -47,10 +47,15 @@
                     <input type="reset" value="abrechen" />
                 </td>
             </tr>
-            <tr>
-                @Html.ActionLink("Passwort ändern", "ChangePassword" + "/" + @Session["id"], "User")
-            </tr>
         </tbody>
+
+        <tfoot>
+            <tr>
+                <td>
+                    @Html.ActionLink("Passwort ändern", "ChangePassword", "User", new { userId = Session["userID"] }, null)
+                </td>
+            </tr>      
+        </tfoot>
     </table>
 
 
