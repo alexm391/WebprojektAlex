@@ -1,14 +1,18 @@
 ﻿body {
     height: 100%;
+    min-height:100%;
     width: 100%;
 }
 
 html {
-    height: 96%;
+    /*height: 96%;*/
+    height: 100%;
+    min-height: 100%;
 }
 
 main {
     height: 75%;
+    min-height: 75%;
     width: 100%;
     padding-left: 1%;
     /*margin-top: 5%;*/
@@ -17,7 +21,8 @@ main {
 }
 
 header {
-    height: 15%;
+    /*height: 15%;*/
+    height: 50px;
     width: 100%;
     font-size: 90%;
     /*position: fixed;*/
@@ -38,6 +43,7 @@ header a:hover {
 content {
     clear: both;
     width: 100%;
+    min-height: 50%;
     /*float: left;*/
     /*padding: 0px 10px 10px 10px;*/
     /*border: 1px solid black;*/
@@ -47,7 +53,9 @@ footer {
     height: 10%;
     width: 100%;
     text-align: left;
+    text-align: end;
     /*border: 1px solid black;*/
+    bottom: 0;
 }
 
 footer a:hover {
@@ -95,6 +103,18 @@ ul{
     /*background-color:black;*/   
 }
 
+#map{
+    margin-top: 10%;
+    width: 40%;
+    height: 70%;
+    float: left;
+}
+
+#link{
+    width: 100%;
+    float: left;
+    /*display: block;*/
+}
 
 
 

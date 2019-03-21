@@ -39,7 +39,7 @@
                         @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
                             ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
                         {
-                            @Html.ActionLink("" + Session["name"], "ChangeUserData", "User", new { userId = Session["id"] } , null)
+                            @Html.ActionLink("" + Session["name"], "ChangeUserData", "User", new { userId = Session["id"] }, null)
                         }
                     </li>
                 </ul>
@@ -58,7 +58,16 @@
                             @Html.ActionLink("Anmelden", "Login", "User")
                         }
                     </li>
-                    <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
+                    @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+                    {
+
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
+
+                    }
                     <li><a href="#aboutme">Zimmer buchen</a></li>
                 </ul>
             </div>
@@ -67,12 +76,15 @@
 
     <main>
         @*<nav>
-                @Html.Partial("Navigation")
-            </nav>*@
+            @Html.Partial("Navigation")
+        </nav>*@
 
-     <content>
-        @RenderBody()
-    </content>
+        <content>
+            @RenderBody()
+        </content>
+
+        <div id="map"></div>
+        <div id="link"><a href="https://www.google.com/maps/search/?api=1&query=47.2643,11.3896" target="_blank">Google Maps</a></div>
     </main>
 
     <footer>
@@ -82,9 +94,28 @@
         </ul>
     </footer>
 
+    <script>
+    function initMap() {
+        var pos = { lat: 47.2643, lng: 11.3896};
+    var map = new google.maps.Map(
+    document.getElementById('map'), {zoom: 15, center: pos});
+    var marker = new google.maps.Marker({position: pos, map: map});
+    }
+    </script>
+
+    <script @*async defer*@
+            src="https://maps.googleapis.com/maps/api/js?&callback=initMap">
+    </script>
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+
 </body>
 </html>
+
+
+
