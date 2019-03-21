@@ -18,6 +18,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li>@Html.ActionLink("Startseite", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Anfahrt", "Map", "Home")</li>
                     <li>
                         @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
                             ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
@@ -47,6 +48,7 @@
             <div class="navbar-collapse" id="myNavbar2">
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Startseite", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Anfahrt", "Map", "Home")</li>
                     <li>
                         @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
                             ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
@@ -83,29 +85,14 @@
             @RenderBody()
         </content>
 
-        <div id="map"></div>
-        <div id="link"><a href="https://www.google.com/maps/search/?api=1&query=47.2643,11.3896" target="_blank">Google Maps</a></div>
     </main>
 
     <footer>
         <ul>
-            <li><a href="#myPage">Impressum</a></li>
-            <li><a href="#myPage">Kontakt</a></li>
+            <li>@Html.ActionLink("Impressum", "Impressum", "Home")</li>
+            <li>@Html.ActionLink("Kontakt", "Kontakt", "Home")</li>
         </ul>
     </footer>
-
-    <script>
-    function initMap() {
-        var pos = { lat: 47.2643, lng: 11.3896};
-    var map = new google.maps.Map(
-    document.getElementById('map'), {zoom: 15, center: pos});
-    var marker = new google.maps.Marker({position: pos, map: map});
-    }
-    </script>
-
-    <script @*async defer*@
-            src="https://maps.googleapis.com/maps/api/js?&callback=initMap">
-    </script>
 
 
 

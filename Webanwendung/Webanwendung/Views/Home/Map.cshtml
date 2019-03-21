@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Map";
+}
+
+<h2>Map</h2>
+
+<style>
+    #map {
+        /*margin-top: 5%;*/
+        width: 40%;
+        height: 80%;
+        float: left;
+    }
+    #link {
+        width: 100%;
+        float: left;
+    }
+</style>
+
+<div id="map"></div>
+<div id="link"><a href="https://www.google.com/maps/search/?api=1&query=47.2643,11.3896" target="_blank">Direkt zu Google Maps</a></div>
+
+<script>
+    function initMap() {
+        var pos = { lat: 47.2643, lng: 11.3896};
+    var map = new google.maps.Map(
+    document.getElementById('map'), {zoom: 15, center: pos});
+    var marker = new google.maps.Marker({position: pos, map: map});
+    }
+</script>
+
+<script @*async defer*@
+        src="https://maps.googleapis.com/maps/api/js?&callback=initMap">
+</script>
+

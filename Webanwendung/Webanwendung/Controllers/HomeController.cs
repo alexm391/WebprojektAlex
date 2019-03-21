@@ -13,5 +13,20 @@ namespace Webanwendung.Controllers
         {
             return View();
         }
+
+        public ActionResult Map()
+        {
+            return View();
+        }
+
+        public ActionResult Impressum()
+        {
+            return View();
+        }
+
+        public ActionResult Kontakt()
+        {
+            return View();
+        }
     }
 }
