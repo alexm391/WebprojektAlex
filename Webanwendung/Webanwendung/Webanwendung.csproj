@@ -137,12 +137,17 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\db\BookingRepositoryDB.cs" />
+    <Compile Include="Models\db\IBookingRepository.cs" />
     <Compile Include="Models\db\IUserRepository.cs" />
+    <Compile Include="Models\db\RepositoryDB.cs" />
     <Compile Include="Models\db\UserRepositoryDB.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Message.cs" />
@@ -195,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -8,31 +8,31 @@ using MySql.Data.MySqlClient;
 
 namespace Webanwendung.Models.db
 {
-    public class UserRepositoryDB : IUserRepository
+    public class UserRepositoryDB : RepositoryDB, IUserRepository
     {
-        private string _connectionString = "Server=localhost;Database=webProject;Uid=root;Pwd=iscoregoals"; 
-        private MySqlConnection _connection;
+        //private string _connectionString = "Server=localhost;Database=webProject;Uid=root;Pwd=iscoregoals"; 
+        //private MySqlConnection _connection;
 
-        public void Open()
-        {
-            if (this._connection == null)
-            {
-                this._connection = new MySqlConnection(this._connectionString);
-            }
+        //public void Open()
+        //{
+        //    if (this._connection == null)
+        //    {
+        //        this._connection = new MySqlConnection(this._connectionString);
+        //    }
 
-            if (this._connection.State != ConnectionState.Open)
-            {
-                this._connection.Open();
-            }
-        }
+        //    if (this._connection.State != ConnectionState.Open)
+        //    {
+        //        this._connection.Open();
+        //    }
+        //}
 
-        public void Close()
-        {
-            if ((this._connection != null) && (this._connection.State == ConnectionState.Open))
-            {
-                this._connection.Close();
-            }
-        }
+        //public void Close()
+        //{
+        //    if ((this._connection != null) && (this._connection.State == ConnectionState.Open))
+        //    {
+        //        this._connection.Close();
+        //    }
+        //}
 
         public bool Insert(User userToInsert)
         {

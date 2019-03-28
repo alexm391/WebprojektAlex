@@ -37,8 +37,11 @@ insert into users values(null, "admin", "admin", null, 0, "admin", "admin@admin.
 insert into rooms values(1, 1, 30);
 insert into rooms values(2, 2, 40);
 insert into rooms values(3, 3, 50);
+insert into rooms values(4, 1, 30);
 
-insert into bookings values(null, 2, 1, "2019-04-20", "2019-04-22")
+insert into bookings values(null, 2, 1, "2019-04-20", "2019-04-22");
+insert into bookings values(null, 4, 4, "2019-04-20", "2019-04-22");
+
 
 
 

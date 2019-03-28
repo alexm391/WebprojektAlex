@@ -12,7 +12,7 @@ namespace Webanwendung.Models.db
         void Close();
         bool Insert(Booking bookingToInsert);
         // bool Delete();
-        bool CheckAvailability(DateTime startDate, DateTime endDate, int beds);
+        int CheckAvailability(DateTime startDate, DateTime endDate, int beds);
 
     }
 }

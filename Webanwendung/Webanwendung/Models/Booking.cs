@@ -12,8 +12,9 @@ namespace Webanwendung.Models
         int RoomNr { get; set; }
         DateTime StartDate { get; set; }
         DateTime EndDate { get; set; }
+        // price
 
-        public Booking() : this(-1, 0, 0, DateTime.MinValue, DateTime.MinValue) { }
+        public Booking() : this(-1, 0, 0, DateTime.MaxValue, DateTime.MaxValue) { }
         public Booking(int id, int idUser, int roomNr, DateTime startDate, DateTime endDate)
         {
             this.ID = id;
