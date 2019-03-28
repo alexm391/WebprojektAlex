@@ -46,7 +46,8 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "select b.roomNr from bookings b inner join rooms r on b.roomNr = r.roomNr where r.beds = @beds and ((@startDate < b.startDate) and (@endDate > b.startDate) or (@startDate > b.startDate) and (@endDate < b.endDate))";
+                cmd.CommandText = "select b.roomNr from bookings b inner join rooms r on b.roomNr = r.roomNr where r.beds = @beds and ((@startDate > b.startDate) and (@startDate < b.endDate) or (@endDate > b.startDate) and (@endDate < b.endDate) or (@startDate < b.startDate) and (@endDate > b.endDate))";                
+                //cmd.CommandText = "select b.roomNr from bookings b inner join rooms r on b.roomNr = r.roomNr where r.beds = @beds and ((@startDate < b.startDate) and (@endDate > b.startDate) or (@startDate > b.startDate) and (@endDate < b.endDate))";
                 cmd.Parameters.AddWithValue("beds", beds);
                 cmd.Parameters.AddWithValue("startDate", startDate);
                 cmd.Parameters.AddWithValue("endDate", endDate);

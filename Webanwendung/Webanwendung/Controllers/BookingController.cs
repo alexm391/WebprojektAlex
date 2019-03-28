@@ -18,8 +18,8 @@ namespace Webanwendung.Controllers
         {
             try
             {
-                DateTime st = new DateTime(2019, 04, 18);
-                DateTime en = new DateTime(2019, 04, 21);
+                DateTime st = new DateTime(2019, 04, 21);
+                DateTime en = new DateTime(2019, 04, 27);
                 bookingRepository = new BookingRepositoryDB();
                 bookingRepository.Open();
                 int i = bookingRepository.CheckAvailability(st, en, 1);
@@ -46,6 +46,25 @@ namespace Webanwendung.Controllers
 
 
         }
+
+        //[HttpGet]
+        //public ActionResult Booking()
+        //{
+        //    Booking b = new Booking();
+        //    return View(b);
+        //}
+
+        //[HttpPost]
+        //public ActionResult Booking(Booking booking)
+        //{
+
+        //}
+
+        //[HttpPost]
+        //public ActionResult Booking(Booking booking, string s)
+        //{
+
+        //}
 
     }
 }
