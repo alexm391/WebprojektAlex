@@ -1,0 +1,50 @@
+﻿@model Webanwendung.Models.Booking
+
+@{
+    ViewBag.Title = "Booking";
+}
+
+<h2>Zimmer Buchen</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <thead>
+            @*<tr>
+                <td></td>
+            </tr>*@
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationSummary()
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.LabelFor(b => b.StartDate, "Anfangsdatum")</td>
+                <td>@Html.TextBoxFor(b => b.StartDate, new { type = "date" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(b => b.EndDate, "Enddatum")</td>
+                <td>@Html.TextBoxFor(b => b.EndDate, new { type = "date" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(b => b.Beds, "Betten")</td>
+                <td>@Html.EnumDropDownListFor(b => b.Beds)</td>
+                @*<td>@Html.DropDownListFor(model => model.Beds, new SelectList(new string[] { "1", "2", "3" }, Model.Beds))</td>*@
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <input type="submit" value="verfügbarkeit prüfen" />
+                    @*<input type="reset" value="abrechen" />*@
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+}
+

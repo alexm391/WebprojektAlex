@@ -30,8 +30,11 @@
                             @Html.ActionLink("Anmelden", "Login", "User")
                         }
                     </li>
-                    <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
-                    <li><a href="#aboutme">Zimmer buchen</a></li>
+                    @if ((Session["isAdmin"] == null) && (Session["isRegisteredUser"] == null))
+                    {
+                        <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
+                    }
+                    <li>@Html.ActionLink("Zimmer buchen", "Booking", "Booking")</li>
                 </ul>
             </div>
             <div class="navbar-collapse" id="myNavbar1">
@@ -60,17 +63,11 @@
                             @Html.ActionLink("Anmelden", "Login", "User")
                         }
                     </li>
-                    @if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
-                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
-                    {
-
-                    }
-                    else
+                    @if ((Session["isAdmin"] == null) && (Session["isRegisteredUser"] == null))                  
                     {
                         <li>@Html.ActionLink("Registrieren", "Registration", "User")</li>
-
                     }
-                    <li><a href="#aboutme">Zimmer buchen</a></li>
+                    <li>@Html.ActionLink("Zimmer buchen", "Booking", "Booking")</li>
                 </ul>
             </div>
         </nav>
