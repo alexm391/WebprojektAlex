@@ -4,6 +4,11 @@
     ViewBag.Title = "Login";
 }
 
+@*<span>
+    @TempData["Message"]
+</span>*@
+    
+
 <h2>Login</h2>
 
 @using (Html.BeginForm())
@@ -30,6 +35,9 @@
                     <input type="submit" value="einloggen" />
                     <input type="reset" value="abrechen" />
                 </td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ActionLink("Sie sind noch nicht Registriert?", "registration", "User")</td>
             </tr>
         </tbody>
     </table>

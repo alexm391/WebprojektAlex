@@ -15,6 +15,10 @@
     {
         <p>@Model.Solution</p>
     }
+    if(Convert.ToString(TempData["Message"]) == "login")
+    {
+        @Html.ActionLink("Login", "Login", "User");
+    }
 
 }
 else

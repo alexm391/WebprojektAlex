@@ -145,7 +145,7 @@ namespace Webanwendung.Controllers
         {
             if(newUserDataForm == null)
             {
-                return RedirectToAction("ChangeUserData(userId)");
+                return RedirectToAction("ChangeUserData", userId);
             }
 
             ValidateData(newUserDataForm);
@@ -181,7 +181,7 @@ namespace Webanwendung.Controllers
             }
             else
             {
-                return RedirectToAction("ChangeUserData(userId, newUserDataForm)");
+                return RedirectToAction("ChangeUserData", new { userId, newUserDataForm });
             }
         }
         

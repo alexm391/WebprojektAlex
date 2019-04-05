@@ -13,7 +13,7 @@ namespace Webanwendung.Controllers
         private IBookingRepository bookingRepository;
 
         // GET: Booking
-        // only for testing
+        // only for testing 
         public ActionResult Index()
         {
             try
@@ -50,8 +50,20 @@ namespace Webanwendung.Controllers
         [HttpGet]
         public ActionResult Booking()
         {
-            Booking b = new Booking();
-            return View(b);
+            Session["roomNr"] = null;
+
+            if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
+            {
+                Booking b = new Booking();
+                return View(b);
+            }
+            else
+            {
+                TempData["Message"] = "login";
+                return View("Message", new Message("Zimmer buchen", "Bitte melden Sie sich zuerst an um ein Zimmer zu buchen"));
+                //TempData["Message"] = "Sie müssen sich anmelden um ein Zimmer zu buchen";
+                //return RedirectToAction("Login", "User");      
+            }
         }
 
         [HttpPost]
@@ -71,9 +83,10 @@ namespace Webanwendung.Controllers
                     bookingRepository = new BookingRepositoryDB();
                     bookingRepository.Open();
                     int roomNr = bookingRepository.CheckAvailability(bookingDataForm.StartDate, bookingDataForm.EndDate, Convert.ToInt32(bookingDataForm.Beds));
+                    Session["roomNr"] = roomNr;
                     if (roomNr > 0)
                     {
-                        return RedirectToAction("BookinConfirmation");
+                        return RedirectToAction("BookingConfirmation", bookingDataForm);
                     }
                     else
                     {
@@ -102,10 +115,24 @@ namespace Webanwendung.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult BookingConfirmation(Booking booking)
         {
-
+            if((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
+            {
+                return View(booking);
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
         }
+
+        //[HttpPost]
+        //public ActionResult BookingConfirmation()
+        //{
+            
+        //}
 
 
 
