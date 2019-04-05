@@ -87,8 +87,28 @@ namespace Webanwendung.Models.db
 
         public bool Insert(Booking bookingToInsert)
         {
-            throw new NotImplementedException();
+            if (bookingToInsert == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "INSERT into bookings values(null, @idUser, @roomNr, @startDate, @endDate)";
+                cmd.Parameters.AddWithValue("idUser", bookingToInsert.IdUser);
+                cmd.Parameters.AddWithValue("roomNr", bookingToInsert.RoomNr);
+                cmd.Parameters.AddWithValue("startDate", bookingToInsert.StartDate);
+                cmd.Parameters.AddWithValue("endDate", bookingToInsert.EndDate);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
 
         private List<int> GetAllRooms(int beds)
         {

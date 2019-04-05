@@ -120,6 +120,7 @@ namespace Webanwendung.Controllers
         {
             if((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
             {
+                Session["booking"] = booking;
                 return View(booking);
             }
             else
@@ -128,11 +129,40 @@ namespace Webanwendung.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult BookingConfirmation()
-        //{
-            
-        //}
+        [HttpPost]
+        public ActionResult BookingConfirmation()
+        {
+            try
+            {
+                //Session["roomNr"] = null;
+                Booking booking = Session["booking"] as Booking;
+                booking.IdUser = Convert.ToInt32(Session["id"]);
+                booking.RoomNr = Convert.ToInt32(Session["roomNr"]);
+                Session["roomNr"] = null;
+                bookingRepository = new BookingRepositoryDB();
+                bookingRepository.Open();
+                if (bookingRepository.Insert(booking))
+                {
+                    return View("Message", new Message("Buchung", "Die Buchung war erfolgreich, Sie bekommen in kürze ein email als Bestätigung"));
+                }
+                else
+                {
+                    return View("Message", new Message("Buchung", "Es ist ein Fehler bei ihrer Buchung aufgetreten", "Versuchen Sie es später nocheinmal"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("Message", new Message("Buchung", "Es ist ein Fehler bei ihrer Buchung aufgetreten"));
+            }
+            finally
+            {
+                bookingRepository.Close();
+            }
+
+
+        }
+
+
 
 
 

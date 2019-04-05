@@ -6,34 +6,39 @@
 
 <h2>Buchung bestätigen</h2>
 
-<table>
-    @*<thead>
-        <tr>
-            <td colspan="2">
-                @Html.ValidationSummary()
-            </td>
-        </tr>
-    </thead>*@
-    <tbody>
-        <tr>
-            <td>Anfangsdatum:</td>
-            <td>@Model.StartDate.ToLongDateString()</td>
-        </tr>
-        <tr>
-            <td>Enddatum:</td>
-            <td>@Model.EndDate.ToLongDateString()</td>
-        </tr>
-        <tr>
-            <td>Betten:</td>
-            <td>@Convert.ToInt32(Model.Beds)</td>
-        </tr>
-        <tr>
-            <td colspan="2" class="center">
-                <input type="submit" value="Buchung bestätigen" />
-                <button onclick="location.href='@Url.Action("Booking", "Booking")'">Buchung abbrechen</button>
-                @*@Html.ActionLink("Buchung abbrechen", "Booking", "Booking", new { bookingDataForm = Model }, null)*@
-            </td>
-        </tr>
-    </tbody>
-</table>
+@using (Html.BeginForm())
+{
 
+    <table>
+        @*<thead>
+                <tr>
+                    <td colspan="2">
+                        @Html.ValidationSummary()
+                    </td>
+                </tr>
+            </thead>*@
+        <tbody>
+            <tr>
+                <td>Anfangsdatum:</td>
+                <td>@Model.StartDate.ToLongDateString()</td>
+            </tr>
+            <tr>
+                <td>Enddatum:</td>
+                <td>@Model.EndDate.ToLongDateString()</td>
+            </tr>
+            <tr>
+                <td>Betten:</td>
+                <td>@Convert.ToInt32(Model.Beds)</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <input type="submit" value="Buchung bestätigen" />
+                    <button onclick="location.href='@Url.Action("Booking", "Booking")'">Buchung abbrechen</button>
+                    @*@Html.ActionLink("Buchung abbrechen", "Booking", "Booking", new { bookingDataForm = Model }, null)*@
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+}
