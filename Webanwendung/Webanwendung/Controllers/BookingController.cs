@@ -65,7 +65,6 @@ namespace Webanwendung.Controllers
                 //return RedirectToAction("Login", "User");      
             }
         }
-
         [HttpPost]
         public ActionResult Booking(Booking bookingDataForm)
         {
@@ -86,7 +85,8 @@ namespace Webanwendung.Controllers
                     Session["roomNr"] = roomNr;
                     if (roomNr > 0)
                     {
-                        return RedirectToAction("BookingConfirmation", bookingDataForm);
+                        Session["booking"] = bookingDataForm;
+                        return RedirectToAction("BookingConfirmation");
                     }
                     else
                     {
@@ -96,6 +96,7 @@ namespace Webanwendung.Controllers
                             s = "Zu diesem Zeitpunk ist leider kein ein-Bett Zimmer frei";
                         }
                         ModelState.AddModelError("StartDate", s);
+                        Session["roomNr"] = null;
                         return View(bookingDataForm);
                     }
                 }
@@ -116,11 +117,11 @@ namespace Webanwendung.Controllers
         }
 
         [HttpGet]
-        public ActionResult BookingConfirmation(Booking booking)
+        public ActionResult BookingConfirmation()
         {
             if((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
             {
-                Session["booking"] = booking;
+                Booking booking = Session["booking"] as Booking;
                 return View(booking);
             }
             else
@@ -128,17 +129,14 @@ namespace Webanwendung.Controllers
                 return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
             }
         }
-
         [HttpPost]
-        public ActionResult BookingConfirmation()
+        public ActionResult BookingConfirmation(Booking booking)
         {
             try
             {
-                //Session["roomNr"] = null;
-                Booking booking = Session["booking"] as Booking;
-                booking.IdUser = Convert.ToInt32(Session["id"]);
-                booking.RoomNr = Convert.ToInt32(Session["roomNr"]);
-                Session["roomNr"] = null;
+                booking = Session["booking"] as Booking;
+                booking.IdUser = Session["id"] != null ? Convert.ToInt32(Session["id"]) : -1;
+                booking.RoomNr = Session["roomNr"] != null ? Convert.ToInt32(Session["roomNr"]) : -1;
                 bookingRepository = new BookingRepositoryDB();
                 bookingRepository.Open();
                 if (bookingRepository.Insert(booking))
@@ -156,6 +154,8 @@ namespace Webanwendung.Controllers
             }
             finally
             {
+                Session["booking"] = null;
+                Session["roomNr"] = null;
                 bookingRepository.Close();
             }
 
@@ -163,24 +163,20 @@ namespace Webanwendung.Controllers
         }
 
 
-
-
-
-
         private void ValidateData(Booking booking)
         {
-            if((booking.StartDate == null) || (booking.StartDate < DateTime.Today))
+            if((booking.StartDate == null) || (booking.StartDate <= DateTime.Today))
             {
                 ModelState.AddModelError("StartDate", "Bitte geben Sie ein Datum für den Beginn ihrer Buchung ein");
             }
-            if ((booking.EndDate == null) || (booking.StartDate > booking.EndDate))
+            if ((booking.EndDate == null) || (booking.StartDate >= booking.EndDate))
             {
                 ModelState.AddModelError("EndDate", "Bitte geben Sie ein Datum für das Ende ihrer Buchung ein");
             }
-            if ((booking.StartDate != null) && (booking.StartDate > new DateTime(2030, 01, 01)))
-            {
-                ModelState.AddModelError("StartDate", "Sie können nicht so weit im vorhinein buchen");
-            }
+            //if ((booking.StartDate != null) && (booking.StartDate > new DateTime(2030, 01, 01)))
+            //{
+            //    ModelState.AddModelError("StartDate", "Sie können nicht so weit im vorhinein buchen");
+            //}
             if(booking.Beds == Beds.nichtAngegeben)
             {
                 ModelState.AddModelError("Beds", "Bitte geben Sie die Betten an");

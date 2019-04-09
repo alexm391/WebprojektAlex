@@ -117,18 +117,20 @@ namespace Webanwendung.Controllers
             Session["isRegisteredUser"] = null; 
             Session["name"] = null;
             Session["id"] = null;
+            Session["roomNr"] = null;
+            Session["booking"] = null;
             return View("Message", new Message("Abmeldung", "Sie wurden erfolgreich abgemeldet"));
 
         }
 
         [HttpGet]
-        public ActionResult ChangeUserData(int userId)
+        public ActionResult ChangeUserData()
         {
             try
             {
                 userRepository = new UserRepositoryDB();
                 userRepository.Open();
-                User user = userRepository.GetUser(userId);
+                User user = userRepository.GetUser(Convert.ToInt32(Session["id"]));
                 return View(user);
             }
             catch (Exception ex)
@@ -141,11 +143,11 @@ namespace Webanwendung.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ChangeUserData(int userId, User newUserDataForm)
+        public ActionResult ChangeUserData(User newUserDataForm)
         {
             if(newUserDataForm == null)
             {
-                return RedirectToAction("ChangeUserData", userId);
+                return RedirectToAction("ChangeUserData");
             }
 
             ValidateData(newUserDataForm);
@@ -156,7 +158,7 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    if(userRepository.ChangeUserData(userId, newUserDataForm))
+                    if(userRepository.ChangeUserData(Convert.ToInt32(Session["id"]), newUserDataForm))
                     {
                         if((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
                         {
@@ -172,7 +174,7 @@ namespace Webanwendung.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return View("Message", new Message("Datenänderung", "Die Daten konnten nicht geändert werden"));
+                    return View("Message", new Message("Datenänderung", "Es gab einen Fehler bei der Verarbeitung ihrer Daten"));
                 }
                 finally
                 {
@@ -181,7 +183,7 @@ namespace Webanwendung.Controllers
             }
             else
             {
-                return RedirectToAction("ChangeUserData", new { userId, newUserDataForm });
+                return RedirectToAction("ChangeUserData", newUserDataForm);
             }
         }
         
@@ -207,19 +209,15 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    bool? newPwd = userRepository.ChangePassword(Convert.ToInt32(Session["id"]), newPasswordForm);
+                    bool newPwd = userRepository.ChangePassword(Convert.ToInt32(Session["id"]), newPasswordForm);
                     if (newPwd == true)
                     {
                         return View("Message", new Message("Passwortänderung", "Das Passwort wurde erfolgreich geändert"));
                     }
-                    else if(newPwd == false)
-                    {
-                        ModelState.AddModelError("NewPassword", "Das Passwort ist nicht richtig");
-                        return View();
-                    }
                     else
                     {
-                        return View("Message", new Message("Passwortänderung", "Das Passwort konnte nicht geändert werden"));
+                        ModelState.AddModelError("NewPassword", "Das alte Passwort ist nicht richtig");
+                        return View();
                     }
                 }
                 catch (Exception ex)
@@ -238,11 +236,6 @@ namespace Webanwendung.Controllers
         }
  
         
-
-
-
-
-
         private void ValidateData(User user)
         {
             if((user.Firstname == null) || (user.Firstname.Trim().Length < 3))
@@ -275,11 +268,12 @@ namespace Webanwendung.Controllers
             if ((user.NewPassword == null) || (user.NewPassword.Length < 8)
                         || (user.NewPassword.IndexOfAny(new char[] { '!', '?', '%', '&' }) == -1))
             {
-                ModelState.AddModelError("NewPassword", "Das Passwort muss mindestens 8 Zeichen lang sein und mindestend ein Sonderzeichen einthalten");
+                ModelState.AddModelError("NewPassword", "Das Passwort muss mindestens 8 Zeichen lang sein ");
+                ModelState.AddModelError("NewPassword", "Das Passwort muss mindestend ein Sonderzeichen einthalten");
             }
             if (user.PasswordConfirmation != user.NewPassword)
             {
-                ModelState.AddModelError("NewPassword", "Die Passwörter stimmen nicht überein");
+                ModelState.AddModelError("NewPassword", "Die neuen Passwörter stimmen nicht überein");
             }
         }
 

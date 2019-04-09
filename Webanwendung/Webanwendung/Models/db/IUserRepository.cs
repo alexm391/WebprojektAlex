@@ -13,7 +13,7 @@ namespace Webanwendung.Models.db
         bool Insert(User userToInsert);
         User Authenticate(Login login);
         bool ChangeUserData(int userIdToChange, User newUserData);
-        bool? ChangePassword(int userIdToChange, User user);
+        bool ChangePassword(int userIdToChange, User user);
         User GetUser(int userIdToGet);
 
     }

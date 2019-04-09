@@ -40,11 +40,12 @@ namespace Webanwendung.Models.db
                 return -1;
             }
 
-            //Dictionary<int, int> bookings = new Dictionary<int, int>();
             List<int> unavailableRooms = new List<int>();
 
             try
             {
+                List<int> allRooms = GetAllRooms(beds);
+
                 MySqlCommand cmd = this._connection.CreateCommand();
                 cmd.CommandText = "select b.roomNr from bookings b inner join rooms r on b.roomNr = r.roomNr where " +
                     "r.beds = @beds and ((@startDate >= b.startDate) and (@startDate <= b.endDate) or (@endDate >= b.startDate) " +
@@ -64,9 +65,8 @@ namespace Webanwendung.Models.db
                                 unavailableRooms.Add(Convert.ToInt32(reader["roomNr"]));
                             };
                         }
-                        reader.Close();
+                        //reader.Close();
 
-                        List<int> allRooms = GetAllRooms(beds);
                         foreach(int a in allRooms)
                         {
                             if (!unavailableRooms.Contains(a))
@@ -76,7 +76,7 @@ namespace Webanwendung.Models.db
                         }                   
                         return -1;
                     }
-                    return 1;
+                    return allRooms != null ? allRooms[0] : -1;
                 }
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace Webanwendung.Models.db
 
         public bool Insert(Booking bookingToInsert)
         {
-            if (bookingToInsert == null)
+            if ((bookingToInsert == null) || (bookingToInsert.IdUser < 0) || (bookingToInsert.RoomNr < 0))
             {
                 return false;
             }
@@ -134,8 +134,10 @@ namespace Webanwendung.Models.db
                                 rooms.Add(Convert.ToInt32(reader["roomNr"]));
                             };
                         }
+                        reader.Close();
                         return rooms;
                     }
+                    reader.Close();
                     return null;
                 }
             }

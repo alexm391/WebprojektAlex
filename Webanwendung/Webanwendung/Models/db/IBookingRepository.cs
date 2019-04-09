@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Webanwendung.Models.db
 {
-    interface IBookingRepository
+    interface IBookingRepository 
     {
         void Open();
         void Close();

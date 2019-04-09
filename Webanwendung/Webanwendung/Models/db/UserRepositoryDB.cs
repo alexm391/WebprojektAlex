@@ -141,11 +141,11 @@ namespace Webanwendung.Models.db
 
         }
 
-        public bool? ChangePassword(int userIdToChange, User user)
+        public bool ChangePassword(int userIdToChange, User user)
         {
             if((userIdToChange == 0) || (user.NewPassword == ""))
             {
-                return null;
+                return false;
             }
 
             try

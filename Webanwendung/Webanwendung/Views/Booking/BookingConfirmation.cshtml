@@ -6,6 +6,7 @@
 
 <h2>Buchung bestätigen</h2>
 
+
 @using (Html.BeginForm())
 {
 
@@ -33,8 +34,8 @@
             <tr>
                 <td colspan="2" class="center">
                     <input type="submit" value="Buchung bestätigen" />
-                    <button onclick="location.href='@Url.Action("Booking", "Booking")'">Buchung abbrechen</button>
-                    @*@Html.ActionLink("Buchung abbrechen", "Booking", "Booking", new { bookingDataForm = Model }, null)*@
+                    @*<button onclick="location.href='@Url.Action("Index", "Home")'">Buchung abbrechen</button>*@
+                    @Html.ActionLink("Buchung abbrechen", "Booking", "Booking", null, new { @class = "btn btn-default btn-sm" })
                 </td>
             </tr>
         </tbody>
