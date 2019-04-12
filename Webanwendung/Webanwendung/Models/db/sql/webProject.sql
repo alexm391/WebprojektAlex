@@ -27,6 +27,7 @@ create table bookings(
     roomNr int not null,
     startDate date not null,
     endDate date not null,
+    price decimal not null,
     constraint idUser_FK foreign key(idUser) references users(id),
 	constraint roomNr_FK foreign key(roomNr) references rooms(roomNr),
 	constraint id_PK primary key(id)
@@ -39,8 +40,9 @@ insert into rooms values(2, 2, 40);
 insert into rooms values(3, 3, 50);
 insert into rooms values(4, 1, 30);
 
-insert into bookings values(null, 2, 1, "2019-04-20", "2019-04-22");
-insert into bookings values(null, 4, 4, "2019-04-20", "2019-04-22");
+insert into bookings values(null, 2, 1, "2019-04-20", "2019-04-22", 60);
+insert into bookings values(null, 4, 4, "2019-04-20", "2019-04-22", 60);
+
 
 
 

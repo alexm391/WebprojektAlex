@@ -10,7 +10,15 @@
 {
     <table>
         <thead>
-            @* price einbauen *@
+            <tr>
+                <td colspan="2">Einbett Zimmer Preis pro Nacht: @Model.PriceOneBed€</td>
+            </tr>
+            <tr>
+                <td colspan="2">Zweibett Zimmer Preis pro Nacht: @Model.PriceTwoBeds€</td>
+            </tr>
+            <tr>
+                <td colspan="2">Dreibett Zimmer Preis pro Nacht: @Model.PriceThreeBeds€</td>
+            </tr>
             <tr>
                 <td colspan="2">
                     @Html.ValidationSummary()

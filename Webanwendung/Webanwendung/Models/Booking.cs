@@ -12,9 +12,11 @@ namespace Webanwendung.Models
 
     public class Booking
     {
-        private decimal _price1;
-        private decimal _price2;
-        private decimal _price3;
+        private decimal _priceOneBed;
+        private decimal _priceTwoBeds;
+        private decimal _priceThreeBeds;
+        private decimal _priceForStay;
+        private int _duration;
 
         public int ID { get; set; }
         public int IdUser { get; set; }
@@ -24,42 +26,66 @@ namespace Webanwendung.Models
         // price + beds
         public Beds Beds { get; set; }
         //public int Beds { get; set; }
-        public decimal Price1
+        public decimal PriceOneBed
         {
-            get { return this._price1; }
+            get { return this._priceOneBed; }
             set
             {
                 if(value >= 0.0m)
                 {
-                    this._price1 = value;
+                    this._priceOneBed = value;
                 }
             }
         }
-        public decimal Price2
+        public decimal PriceTwoBeds
         {
-            get { return this._price2; }
+            get { return this._priceTwoBeds; }
             set
             {
                 if (value >= 0.0m)
                 {
-                    this._price2 = value;
+                    this._priceTwoBeds = value;
                 }
             }
         }
-        public decimal Price3
+        public decimal PriceThreeBeds
         {
-            get { return this._price3; }
+            get { return this._priceThreeBeds; }
             set
             {
                 if (value >= 0.0m)
                 {
-                    this._price3 = value;
+                    this._priceThreeBeds = value;
+                }
+            }
+        }
+        public decimal PriceForStay
+        {
+            get { return this._priceForStay; }
+            set
+            {
+                if(value > 0m)
+                {
+                    this._priceForStay = value;
+
+                }
+            }
+        }
+        public int Duration
+        {
+            get { return this._duration; }
+            set
+            {
+                if (value > 0)
+                {
+                    this._duration = value;
                 }
             }
         }
 
-        public Booking() : this(-1, 0, 0, DateTime.MaxValue, DateTime.MaxValue, 0, 0m, 0m, 0m) { }
-        public Booking(int id, int idUser, int roomNr, DateTime startDate, DateTime endDate, Beds beds, decimal price1, decimal price2, decimal price3)
+        public Booking() : this(-1, 0, 0, DateTime.MaxValue, DateTime.MaxValue, 0, 0m, 0m, 0m, 0m, 0) { }
+        public Booking(int id, int idUser, int roomNr, DateTime startDate, DateTime endDate, Beds beds, 
+            decimal price1, decimal price2, decimal price3, decimal priceForStay, int duration)
         {
             this.ID = id;
             this.IdUser = idUser;
@@ -67,9 +93,11 @@ namespace Webanwendung.Models
             this.StartDate = startDate;
             this.EndDate = endDate;
             this.Beds = beds;
-            this.Price1 = price1;
-            this.Price2 = price2;
-            this.Price3 = price3;
+            this.PriceOneBed = price1;
+            this.PriceTwoBeds = price2;
+            this.PriceThreeBeds = price3;
+            this.PriceForStay = priceForStay;
+            this.Duration = duration;
         }
 
     }

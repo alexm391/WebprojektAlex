@@ -95,11 +95,12 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "INSERT into bookings values(null, @idUser, @roomNr, @startDate, @endDate)";
+                cmd.CommandText = "INSERT into bookings values(null, @idUser, @roomNr, @startDate, @endDate, @price)";
                 cmd.Parameters.AddWithValue("idUser", bookingToInsert.IdUser);
                 cmd.Parameters.AddWithValue("roomNr", bookingToInsert.RoomNr);
                 cmd.Parameters.AddWithValue("startDate", bookingToInsert.StartDate);
                 cmd.Parameters.AddWithValue("endDate", bookingToInsert.EndDate);
+                cmd.Parameters.AddWithValue("price", bookingToInsert.PriceForStay);
 
                 return cmd.ExecuteNonQuery() == 1;
             }
@@ -126,9 +127,7 @@ namespace Webanwendung.Models.db
                         {
                             reader.Read();
                             prices.Add(Convert.ToInt32(reader["price"]));                                                     
-                            //return rooms;
                         }
-                        //return null;
                     }
                 }
                 return prices;
@@ -139,6 +138,7 @@ namespace Webanwendung.Models.db
                 throw;
             }
         }
+
 
         private List<int> GetAllRooms(int beds)
         {

@@ -54,11 +54,25 @@ namespace Webanwendung.Controllers
 
             if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
             {
-                Booking b = new Booking();
-                bookingRepository = new BookingRepositoryDB();
-                bookingRepository.Open();
-                List<int> prices = bookingRepository.GetPrice();
-                return View(b);
+                try
+                {
+                    Booking b = new Booking();
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    List<int> prices = bookingRepository.GetPrice();
+                    b.PriceOneBed = prices[0];
+                    b.PriceTwoBeds = prices[1];
+                    b.PriceThreeBeds = prices[2];
+                    return View(b);
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Buchung", "Beim Anzeigen der Seite ist ein Fehler aufgetreten"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
             }
             else
             {
@@ -67,13 +81,27 @@ namespace Webanwendung.Controllers
                 //TempData["Message"] = "Sie müssen sich anmelden um ein Zimmer zu buchen";
                 //return RedirectToAction("Login", "User");      
             }
-        }
+        }     
         [HttpPost]
         public ActionResult Booking(Booking bookingDataForm)
         {
             if (bookingDataForm == null)
             {
                 return RedirectToAction("Booking");
+            }
+
+            try
+            {
+                bookingRepository = new BookingRepositoryDB();
+                bookingRepository.Open();
+                List<int> prices = bookingRepository.GetPrice();
+                bookingDataForm.PriceOneBed = prices[0];
+                bookingDataForm.PriceTwoBeds = prices[1];
+                bookingDataForm.PriceThreeBeds = prices[2];
+            }
+            catch (Exception)
+            {
+                return View("Message", new Message("Buchung", "Bei der Verarbeitung ihrer Daten ist ein Fehler aufgetreten"));
             }
 
             ValidateData(bookingDataForm);
@@ -115,6 +143,7 @@ namespace Webanwendung.Controllers
             }
             else
             {
+                
                 return View(bookingDataForm);
             }
         }
@@ -122,15 +151,24 @@ namespace Webanwendung.Controllers
         [HttpGet]
         public ActionResult BookingConfirmation()
         {
-            if((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
+            try
             {
-                Booking booking = Session["booking"] as Booking;
-                return View(booking);
+                if ((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
+                {
+                    Booking booking = Session["booking"] as Booking;
+                    SetPriceForStay(booking);
+                    return View(booking);
+                }
+                else
+                {
+                    return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+                }
             }
-            else
+            catch (Exception)
             {
-                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+                return View("Message", new Message("Buchung", "Bei der Verarbeitung ihrer Daten ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
             }
+
         }
         [HttpPost]
         public ActionResult BookingConfirmation(Booking booking)
@@ -185,6 +223,24 @@ namespace Webanwendung.Controllers
                 ModelState.AddModelError("Beds", "Bitte geben Sie die Betten an");
             }
             
+        }
+
+        private void SetPriceForStay(Booking booking)
+        {
+            booking.Duration = booking.EndDate.Day - booking.StartDate.Day;
+
+            if (booking.Beds == Beds.eins)
+            {
+                booking.PriceForStay = booking.PriceOneBed * booking.Duration;
+            }
+            else if (booking.Beds == Beds.zwei)
+            {
+                booking.PriceForStay = booking.PriceTwoBeds * booking.Duration;
+            }
+            else if (booking.Beds == Beds.drei)
+            {
+                booking.PriceForStay = booking.PriceThreeBeds * booking.Duration;
+            }
         }
 
     }

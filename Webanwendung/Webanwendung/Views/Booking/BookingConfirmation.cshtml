@@ -11,13 +11,6 @@
 {
 
     <table>
-        @*<thead>
-                <tr>
-                    <td colspan="2">
-                        @Html.ValidationSummary()
-                    </td>
-                </tr>
-            </thead>*@
         <tbody>
             <tr>
                 <td>Anfangsdatum:</td>
@@ -30,6 +23,14 @@
             <tr>
                 <td>Betten:</td>
                 <td>@Convert.ToInt32(Model.Beds)</td>
+            </tr>
+            <tr>
+                <td>Nächte:</td>
+                <td>@Model.Duration</td>
+            </tr>
+            <tr>
+                <td>Gesamtpreis:</td>
+                <td>@Model.PriceForStay€</td>
             </tr>
             <tr>
                 <td colspan="2" class="center">
