@@ -53,7 +53,7 @@ namespace Webanwendung.Controllers
         {
             Session["roomNr"] = null;
 
-            if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
+            if (IsLoggedIn())
             {
                 try
                 {
@@ -204,6 +204,33 @@ namespace Webanwendung.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult ShowBookings()
+        {
+            if (IsLoggedIn())
+            {
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    List<Booking> bookings = bookingRepository.GetBookings(Convert.ToInt32(Session["id"]));
+                    return View(bookings);
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Buchungen", "Beim anzeigen ihrer Buchungen ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
+        }
+
 
         private void ValidateData(Booking booking)
         {
@@ -243,6 +270,20 @@ namespace Webanwendung.Controllers
                 booking.PriceForStay = booking.PriceThreeBeds * booking.Duration;
             }
         }
+
+        private bool IsLoggedIn()
+        {
+            if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
     }
 }

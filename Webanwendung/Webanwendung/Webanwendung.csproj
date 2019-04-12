@@ -199,6 +199,7 @@
     <Content Include="Views\Home\Kontakt.cshtml" />
     <Content Include="Views\Booking\Booking.cshtml" />
     <Content Include="Views\Booking\BookingConfirmation.cshtml" />
+    <Content Include="Views\Booking\ShowBookings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

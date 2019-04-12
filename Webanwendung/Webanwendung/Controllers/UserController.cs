@@ -18,8 +18,16 @@ namespace Webanwendung.Controllers
         [HttpGet]
         public ActionResult Registration()
         {
-            User u = new User(); 
-            return View(u);
+            if(!IsLoggedIn())
+            {
+                User u = new User();
+                return View(u);
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die eingegeben URL ist ungültig"));
+            }
+
         }
         [HttpPost]
         public ActionResult Registration(User userDataForm)
@@ -113,33 +121,48 @@ namespace Webanwendung.Controllers
 
         public ActionResult Logout()
         {
-            Session["isAdmin"] = null;
-            Session["isRegisteredUser"] = null; 
-            Session["name"] = null;
-            Session["id"] = null;
-            Session["roomNr"] = null;
-            Session["booking"] = null;
-            return View("Message", new Message("Abmeldung", "Sie wurden erfolgreich abgemeldet"));
+            if (IsLoggedIn())
+            {
+                Session["isAdmin"] = null;
+                Session["isRegisteredUser"] = null;
+                Session["name"] = null;
+                Session["id"] = null;
+                Session["roomNr"] = null;
+                Session["booking"] = null;
+                return View("Message", new Message("Abmeldung", "Sie wurden erfolgreich abgemeldet"));
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die eingegebene URL ist ungültig"));
+            }
+
 
         }
 
         [HttpGet]
         public ActionResult ChangeUserData()
         {
-            try
+            if (IsLoggedIn())
             {
-                userRepository = new UserRepositoryDB();
-                userRepository.Open();
-                User user = userRepository.GetUser(Convert.ToInt32(Session["id"]));
-                return View(user);
+                try
+                {
+                    userRepository = new UserRepositoryDB();
+                    userRepository.Open();
+                    User user = userRepository.GetUser(Convert.ToInt32(Session["id"]));
+                    return View(user);
+                }
+                catch (Exception ex)
+                {
+                    return View("Message", new Message("Datenänderung", "Es gab eine Fehler bei der Datenänderung"));
+                }
+                finally
+                {
+                    userRepository.Close();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return View("Message", new Message("Datenänderung", "Es gab eine Fehler bei der Datenänderung"));
-            }
-            finally
-            {
-                userRepository.Close();
+                return View("Message", new Message("URL Fehler", "Die eingegebene URL ist ungültig"));
             }
         }
         [HttpPost]
@@ -190,8 +213,16 @@ namespace Webanwendung.Controllers
         [HttpGet]
         public ActionResult ChangePassword()
         {
-            User u = new User();
-            return View(u);
+            if (IsLoggedIn())
+            {
+                User u = new User();
+                return View(u);
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die eingegebene URL ist ungültig"));
+            }
+
         }
         [HttpPost]
         public ActionResult ChangePassword(User newPasswordForm)
@@ -263,6 +294,7 @@ namespace Webanwendung.Controllers
                 ModelState.AddModelError("Email", "Bitte Email-Adresse angeben");
             }
         }
+
         private void ValidatePassword(User user)
         {
             if ((user.NewPassword == null) || (user.NewPassword.Length < 8)
@@ -276,6 +308,21 @@ namespace Webanwendung.Controllers
                 ModelState.AddModelError("NewPassword", "Die neuen Passwörter stimmen nicht überein");
             }
         }
+
+        private bool IsLoggedIn()
+        {
+            if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
+                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
     }
 }

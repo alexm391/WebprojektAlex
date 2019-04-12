@@ -1,0 +1,59 @@
+﻿@model List<Webanwendung.Models.Booking>
+@using Webanwendung.Models
+
+@{
+    ViewBag.Title = "ShowBookings";
+}
+
+
+<style>
+    .tableCell {
+        padding-right: 20px;
+    }
+</style>
+
+<h2>Buchungen</h2>
+
+@if (Model != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Anfangsdatum</td>
+                <td>Enddatum</td>
+                <td>Betten</td>
+                <td>Nächte</td>
+                <td>Preis</td>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (Booking b in Model)
+            {
+                <tr>
+                    <td class="tableCell">@b.StartDate.ToLongDateString()</td>
+                    <td class="tableCell">@b.EndDate.ToLongDateString()</td>
+                    <td class="tableCell">@b.Beds</td>
+                    <td class="tableCell">@b.Duration</td>
+                    <td class="tableCell">@b.PriceForStay</td>
+                    <td>@Html.ActionLink("Löschen", "Delete" + "/" + @b.ID, "Booking")</td>          
+                </tr>
+            }
+        </tbody>
+         <tfoot>
+            <tr>
+                <td colspan="6">Alle Buchungen</td>
+            </tr> 
+        </tfoot>
+    </table>
+
+
+}
+else
+{
+    <p>Sie haben noch keine Zimmer gebucht</p>
+}
+
+
+
+
