@@ -109,6 +109,36 @@ namespace Webanwendung.Models.db
             }
         }
 
+        public List<int> GetPrice()
+        {
+            List<int> prices = new List<int>();
+            try
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    MySqlCommand cmd = this._connection.CreateCommand();
+                    cmd.CommandText = "select price from rooms where beds = @beds";
+                    cmd.Parameters.AddWithValue("beds", i);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+                            prices.Add(Convert.ToInt32(reader["price"]));                                                     
+                            //return rooms;
+                        }
+                        //return null;
+                    }
+                }
+                return prices;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         private List<int> GetAllRooms(int beds)
         {

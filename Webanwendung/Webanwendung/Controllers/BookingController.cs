@@ -55,6 +55,9 @@ namespace Webanwendung.Controllers
             if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
             {
                 Booking b = new Booking();
+                bookingRepository = new BookingRepositoryDB();
+                bookingRepository.Open();
+                List<int> prices = bookingRepository.GetPrice();
                 return View(b);
             }
             else
