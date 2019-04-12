@@ -22,6 +22,7 @@ namespace Webanwendung.Controllers
                 DateTime en = new DateTime(2019, 04, 27);
                 bookingRepository = new BookingRepositoryDB();
                 bookingRepository.Open();
+                List<Booking> bookings = bookingRepository.GetBookings(2);
                 int i = bookingRepository.CheckAvailability(st, en, 1);
                 if (i > 0)
                 {
@@ -59,7 +60,7 @@ namespace Webanwendung.Controllers
                     Booking b = new Booking();
                     bookingRepository = new BookingRepositoryDB();
                     bookingRepository.Open();
-                    List<int> prices = bookingRepository.GetPrice();
+                    List<int> prices = bookingRepository.GetPrices();
                     b.PriceOneBed = prices[0];
                     b.PriceTwoBeds = prices[1];
                     b.PriceThreeBeds = prices[2];
@@ -94,7 +95,7 @@ namespace Webanwendung.Controllers
             {
                 bookingRepository = new BookingRepositoryDB();
                 bookingRepository.Open();
-                List<int> prices = bookingRepository.GetPrice();
+                List<int> prices = bookingRepository.GetPrices();
                 bookingDataForm.PriceOneBed = prices[0];
                 bookingDataForm.PriceTwoBeds = prices[1];
                 bookingDataForm.PriceThreeBeds = prices[2];

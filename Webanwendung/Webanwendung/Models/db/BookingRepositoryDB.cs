@@ -110,7 +110,7 @@ namespace Webanwendung.Models.db
             }
         }
 
-        public List<int> GetPrice()
+        public List<int> GetPrices()
         {
             List<int> prices = new List<int>();
             try
@@ -139,6 +139,47 @@ namespace Webanwendung.Models.db
             }
         }
 
+        public List<Booking> GetBookings(int userId)
+        {
+            if(userId == 0)
+            {
+                return null;
+            }
+            List<Booking> bookings = new List<Booking>();
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr where idUser = @id";
+                cmd.Parameters.AddWithValue("id", userId);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            bookings.Add(new Booking
+                            {
+                                ID = Convert.ToInt32(reader["id"]),
+                                StartDate = Convert.ToDateTime(reader["startDate"]),
+                                EndDate = Convert.ToDateTime(reader["endDate"]),
+                                Beds = (Beds)Convert.ToInt32(reader["beds"]),
+                                PriceForStay = Convert.ToDecimal(reader["price"]),
+                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day
+                            }
+                            );                         
+                        }
+                        return bookings;             
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         private List<int> GetAllRooms(int beds)
         {
