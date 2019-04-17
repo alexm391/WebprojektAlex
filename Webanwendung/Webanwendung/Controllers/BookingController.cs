@@ -204,7 +204,6 @@ namespace Webanwendung.Controllers
 
         }
 
-        [HttpGet]
         public ActionResult ShowBookings()
         {
             if (IsLoggedIn())

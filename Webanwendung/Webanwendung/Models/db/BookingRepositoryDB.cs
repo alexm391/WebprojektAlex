@@ -179,7 +179,29 @@ namespace Webanwendung.Models.db
             {
                 throw;
             }
+        
+}
+
+        public bool Delete(int idToDelete)
+        {
+            if (idToDelete == 0)
+            {
+                return false;
+            }
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "DELETE FROM bookings WHERE ID = @id";
+                cmd.Parameters.AddWithValue("id", idToDelete);
+
+                return cmd.ExecuteNonQuery() == 1;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
 
         private List<int> GetAllRooms(int beds)
         {
