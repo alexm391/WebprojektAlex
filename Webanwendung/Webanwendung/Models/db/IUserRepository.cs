@@ -15,6 +15,7 @@ namespace Webanwendung.Models.db
         bool ChangeUserData(int userIdToChange, User newUserData);
         bool ChangePassword(int userIdToChange, User user);
         User GetUser(int userIdToGet);
+        List<User> GetAllUsers();
 
     }
 }

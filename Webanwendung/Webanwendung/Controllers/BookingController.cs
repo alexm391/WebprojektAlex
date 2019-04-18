@@ -12,41 +12,40 @@ namespace Webanwendung.Controllers
     {
         private IBookingRepository bookingRepository;
 
-        // GET: Booking
         // only for testing 
-        public ActionResult Index()
-        {
-            try
-            {
-                DateTime st = new DateTime(2019, 04, 21);
-                DateTime en = new DateTime(2019, 04, 27);
-                bookingRepository = new BookingRepositoryDB();
-                bookingRepository.Open();
-                List<Booking> bookings = bookingRepository.GetBookings(2);
-                int i = bookingRepository.CheckAvailability(st, en, 1);
-                if (i > 0)
-                {
-                    return View("Message", new Message("frei", "kein Fehler {0}", i.ToString()));
-                }
-                else
-                {
-                    return View("Message", new Message("nicht frei", "kein Fehler {0}", i.ToString()));
-                }
+        //public ActionResult Index()
+        //{
+        //    try
+        //    {
+        //        DateTime st = new DateTime(2019, 04, 21);
+        //        DateTime en = new DateTime(2019, 04, 27);
+        //        bookingRepository = new BookingRepositoryDB();
+        //        bookingRepository.Open();
+        //        List<Booking> bookings = bookingRepository.GetBookings(2);
+        //        int i = bookingRepository.CheckAvailability(st, en, 1);
+        //        if (i > 0)
+        //        {
+        //            return View("Message", new Message("frei", "kein Fehler {0}", i.ToString()));
+        //        }
+        //        else
+        //        {
+        //            return View("Message", new Message("nicht frei", "kein Fehler {0}", i.ToString()));
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                return View("Message", new Message("Fehler", "Fehler"));
-            }
-            finally
-            {
-                bookingRepository.Close();
-            }
-
-
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View("Message", new Message("Fehler", "Fehler"));
+        //    }
+        //    finally
+        //    {
+        //        bookingRepository.Close();
+        //    }
 
 
-        }
+
+
+        //}
 
         [HttpGet]
         public ActionResult Booking()
