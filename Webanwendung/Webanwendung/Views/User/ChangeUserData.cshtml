@@ -51,16 +51,16 @@
 
         <tfoot>
             <tr>
-                <td>
-                    @Html.ActionLink("Passwort ändern", "ChangePassword", "User")
-                </td>
-            </tr>      
+                @*<td>@Html.ActionLink("Passwort ändern", "ChangePassword", "User")</td>*@
+            </tr>
         </tfoot>
     </table>
 
-
-
-
-
 }
 
+<br />
+
+@using (Html.BeginForm("ChangePassword", "User", FormMethod.Get))
+{
+    <td><input type="submit" value="Passwort ändern" /></td>
+}

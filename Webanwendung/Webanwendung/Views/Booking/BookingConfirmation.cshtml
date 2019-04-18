@@ -7,40 +7,39 @@
 <h2>Buchung bestätigen</h2>
 
 
-@using (Html.BeginForm())
-{
+<table>
+    <tbody>
+        <tr>
+            <td>Anfangsdatum:</td>
+            <td>@Model.StartDate.ToLongDateString()</td>
+        </tr>
+        <tr>
+            <td>Enddatum:</td>
+            <td>@Model.EndDate.ToLongDateString()</td>
+        </tr>
+        <tr>
+            <td>Betten:</td>
+            <td>@Convert.ToInt32(Model.Beds)</td>
+        </tr>
+        <tr>
+            <td>Nächte:</td>
+            <td>@Model.Duration</td>
+        </tr>
+        <tr>
+            <td>Gesamtpreis:</td>
+            <td>@Model.PriceForStay€</td>
+        </tr>
+        <tr>
+            @using (Html.BeginForm())
+            {
+                <td><input type="submit" value="Buchung bestätigen" /></td>
+            }
+            @*<td>@Html.ActionLink("Buchung abbrechen", "Booking", "Booking", null, new { @class = "btn btn-default btn-sm" })</td>*@
+            @using (Html.BeginForm("Booking", "Booking", FormMethod.Get))
+            {
+                <td><input type="submit" value="Buchung abbrechen" /></td>
+            }
+        </tr>
+    </tbody>
+</table>
 
-    <table>
-        <tbody>
-            <tr>
-                <td>Anfangsdatum:</td>
-                <td>@Model.StartDate.ToLongDateString()</td>
-            </tr>
-            <tr>
-                <td>Enddatum:</td>
-                <td>@Model.EndDate.ToLongDateString()</td>
-            </tr>
-            <tr>
-                <td>Betten:</td>
-                <td>@Convert.ToInt32(Model.Beds)</td>
-            </tr>
-            <tr>
-                <td>Nächte:</td>
-                <td>@Model.Duration</td>
-            </tr>
-            <tr>
-                <td>Gesamtpreis:</td>
-                <td>@Model.PriceForStay€</td>
-            </tr>
-            <tr>
-                <td colspan="2" class="center">
-                    <input type="submit" value="Buchung bestätigen" />
-                    @*<button onclick="location.href='@Url.Action("Index", "Home")'">Buchung abbrechen</button>*@
-                    @Html.ActionLink("Buchung abbrechen", "Booking", "Booking", null, new { @class = "btn btn-default btn-sm" })
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-
-}

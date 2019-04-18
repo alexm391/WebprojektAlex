@@ -200,8 +200,6 @@ namespace Webanwendung.Controllers
                 Session["roomNr"] = null;
                 bookingRepository.Close();
             }
-
-
         }
 
         public ActionResult ShowBookings()
@@ -212,12 +210,52 @@ namespace Webanwendung.Controllers
                 {
                     bookingRepository = new BookingRepositoryDB();
                     bookingRepository.Open();
-                    List<Booking> bookings = bookingRepository.GetBookings(Convert.ToInt32(Session["id"]));
-                    return View(bookings);
+                    if(Session["id"] != null)
+                    {
+                        List<Booking> bookings = bookingRepository.GetBookings(Convert.ToInt32(Session["id"]));
+                        return View(bookings);
+                    }
+                    else 
+                    {
+                        return View("Message", new Message("Buchungen", "Beim anzeigen ihrer Buchungen ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
+                    }
                 }
                 catch (Exception)
                 {
                     return View("Message", new Message("Buchungen", "Beim anzeigen ihrer Buchungen ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int idToDelete)
+        {
+            if (IsLoggedIn())
+            {
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    if (bookingRepository.Delete(idToDelete))
+                    {
+                        return View("Message", new Message("Buchung Löschen", "Ihre Buchung wurde erfolgreich gelöscht"));
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Buchung Löschen", "Ihre Buchung konnte nicht gelöscht werden", "Versuchen Sie es später nocheinmal"));
+                    }     
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Buchung Löschen", "Ihre Buchung konnte nicht gelöscht werden", "Versuchen Sie es später nocheinmal"));
                 }
                 finally
                 {

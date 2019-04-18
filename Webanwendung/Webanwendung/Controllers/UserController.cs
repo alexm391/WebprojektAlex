@@ -148,8 +148,15 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    User user = userRepository.GetUser(Convert.ToInt32(Session["id"]));
-                    return View(user);
+                    if(Session["id"] != null)
+                    {
+                        User user = userRepository.GetUser(Convert.ToInt32(Session["id"]));
+                        return View(user);
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Datenänderung", "Es gab eine Fehler bei der Datenänderung"));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -181,19 +188,25 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    if(userRepository.ChangeUserData(Convert.ToInt32(Session["id"]), newUserDataForm))
+                    if(Session["id"] != null)
                     {
-                        if((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
+                        if (userRepository.ChangeUserData(Convert.ToInt32(Session["id"]), newUserDataForm))
                         {
-                            Session["name"] = newUserDataForm.Firstname + " " + newUserDataForm.Lastname;
+                            if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
+                            {
+                                Session["name"] = newUserDataForm.Firstname + " " + newUserDataForm.Lastname;
+                            }
+                            return View("Message", new Message("Datenänderung", "Die Daten wurden erfolgreich geändert"));
                         }
-                        return View("Message", new Message("Datenänderung", "Die Daten wurden erfolgreich geändert"));
+                        else
+                        {
+                            return View("Message", new Message("Datenänderung", "Die Daten konnten nicht geändert werden"));
+                        }
                     }
                     else
                     {
                         return View("Message", new Message("Datenänderung", "Die Daten konnten nicht geändert werden"));
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -240,15 +253,22 @@ namespace Webanwendung.Controllers
                 {
                     userRepository = new UserRepositoryDB();
                     userRepository.Open();
-                    bool newPwd = userRepository.ChangePassword(Convert.ToInt32(Session["id"]), newPasswordForm);
-                    if (newPwd == true)
+                    if (Session["id"] != null)
                     {
-                        return View("Message", new Message("Passwortänderung", "Das Passwort wurde erfolgreich geändert"));
+                        bool newPwd = userRepository.ChangePassword(Convert.ToInt32(Session["id"]), newPasswordForm);
+                        if (newPwd == true)
+                        {
+                            return View("Message", new Message("Passwortänderung", "Das Passwort wurde erfolgreich geändert"));
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("NewPassword", "Das alte Passwort ist nicht richtig");
+                            return View();
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("NewPassword", "Das alte Passwort ist nicht richtig");
-                        return View();
+                        return View("Message", new Message("Passwortänderung", "Das Passwort konnte nicht geändert werden"));
                     }
                 }
                 catch (Exception ex)
@@ -277,7 +297,7 @@ namespace Webanwendung.Controllers
             {
                 ModelState.AddModelError("Lastname", "Der Nachname muss mindestens 3 Zeichen lang sein");
             }
-            if(user.Birthdate > DateTime.Now)
+            if((user.Birthdate == null) || (user.Birthdate > DateTime.Now))
             {
                 ModelState.AddModelError("Birthdate", "Bitte Geburtsdatum angeben");
             }

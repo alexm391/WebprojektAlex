@@ -21,8 +21,8 @@
             <tr>
                 <td>Anfangsdatum</td>
                 <td>Enddatum</td>
-                <td>Betten</td>
-                <td>Nächte</td>
+                <td class="tableCell">Betten</td>
+                <td class="tableCell">Nächte</td>
                 <td>Preis</td>
             </tr>
 
@@ -36,7 +36,13 @@
                     <td class="tableCell">@b.Beds</td>
                     <td class="tableCell">@b.Duration</td>
                     <td class="tableCell">@b.PriceForStay</td>
-                    <td>@Html.ActionLink("Löschen", "Delete" + "/" + @b.ID, "Booking")</td>          
+                    @using (Html.BeginForm("Delete", "Booking"))
+                    {
+                        <td><input type="hidden" name="idToDelete" value="@b.ID" /></td>
+                        <td><input type="submit" value="Löschen"  /></td>
+                    }
+                    @*<td>@Html.ActionLink("Löschen", "Delete", "Booking", new { idToDelete = b.ID }, null)</td>     
+                    <td>@Ajax.ActionLink("Löschen", "Delete", "Booking", new { idToDelete = b.ID }, new AjaxOptions { HttpMethod = "post"})</td>*@
                 </tr>
             }
         </tbody>
