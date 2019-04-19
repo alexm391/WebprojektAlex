@@ -81,11 +81,13 @@ namespace Webanwendung.Controllers
 
             try
             {
+                DateTime dt = DateTime.MinValue;
+
                 userRepository = new UserRepositoryDB();
                 userRepository.Open();
                 User user = userRepository.Authenticate(loginDataForm);
 
-                if(user != null)
+                if (user != null)
                 {
                     if (user.UserRole == UserRole.admin)
                     {
@@ -111,7 +113,7 @@ namespace Webanwendung.Controllers
             }
             catch(Exception ex)
             {
-                return View("Message", new Message("Anmeldung", "Es bei der Anmeldung einen Fehler", "Versuchen Sie es später nocheinmal"));
+                return View("Message", new Message("Anmeldung", "Es bei der Anmeldung einen Fehler passiert", "Versuchen Sie es später nocheinmal"));
             }
             finally
             {

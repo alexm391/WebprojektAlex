@@ -1,0 +1,78 @@
+﻿@model List<Webanwendung.Models.User>
+@using Webanwendung.Models
+
+@{
+    ViewBag.Title = "ShowUsers";
+}
+
+
+<style>
+    .tableCell {
+        padding-right: 20px;
+    }
+</style>
+
+<h2>Alle User</h2>
+
+@if (Model != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Vorname</td>
+                <td class="tableCell">Nachname</td>
+                <td>Geburtsdatum</td>
+                <td>Geschlecht</td>
+                <td>Username</td>
+                <td>Email</td>
+                <td>UserRole</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (User u in Model)
+            {
+                <tr>
+                    <td class="tableCell">@u.ID</td>
+                    <td class="tableCell">@u.Firstname</td>
+                    <td class="tableCell">@u.Lastname</td>
+                    <td class="tableCell">@u.Birthdate.ToLongDateString()</td>
+                    <td class="tableCell">@u.Gender</td>
+                    <td class="tableCell">@u.Username</td>
+                    <td class="tableCell">@u.Email</td>
+                    <td class="tableCell">@u.UserRole</td>
+
+                    @using (Html.BeginForm("ShowBookings", "Admin"))
+                    {
+                        <td><input type="hidden" name="idToDelete" value="@u.ID" /></td>
+                        <td><input type="submit" value="Buchungen" /></td>
+                    }
+                    @if (u.UserRole != UserRole.admin)
+                    {
+                        using (Html.BeginForm("Delete", "Admin"))
+                        {
+                            <td><input type="hidden" name="idToDelete" value="@u.ID" /></td>
+                            <td><input type="submit" value="Löschen" /></td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Alle User</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+}
+else
+{
+    <p>Es gibt keine registrierten Benutzer</p>
+}
+
+
+
+

@@ -29,6 +29,32 @@ namespace Webanwendung.Controllers
             }   
         }
 
+        public ActionResult ShowUsers()
+        {
+            if (IsAdmin())
+            {
+                try
+                {
+                    userRepository = new UserRepositoryDB();
+                    userRepository.Open();
+                    List<User> users = userRepository.GetAllUsers();
+                    return View(users);
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Alle User anzeigen", "Beim anzeigen aller User ist ein Fehler aufgetreten"));
+                }
+                finally
+                {
+                    userRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die eingegebene URL ist ungültig"));
+            }
+        }
+
 
         private bool IsAdmin()
         {

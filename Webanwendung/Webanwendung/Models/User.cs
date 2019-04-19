@@ -19,7 +19,7 @@ namespace Webanwendung.Models
         public int ID { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public DateTime? Birthdate { get; set; }
+        public DateTime Birthdate { get; set; }
         public Gender Gender { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -28,8 +28,8 @@ namespace Webanwendung.Models
         public string PasswordConfirmation { get; set; }
         public UserRole UserRole { get; set; }
 
-        public User() : this(-1, "", "", null, Gender.notSpecified, "", "", "",  "", "", UserRole.noUser) { }
-        public User(int id, string firstname, string lastname, DateTime? birthdate, Gender gender, string username, string email, 
+        public User() : this(-1, "", "", DateTime.MinValue, Gender.notSpecified, "", "", "",  "", "", UserRole.noUser) { }
+        public User(int id, string firstname, string lastname, DateTime birthdate, Gender gender, string username, string email, 
             string oldPassword, string newPassword, string passwordConfirmation, UserRole userRole)
         {
             this.ID = id;

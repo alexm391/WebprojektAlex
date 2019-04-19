@@ -87,7 +87,7 @@ namespace Webanwendung.Models.db
                             ID = Convert.ToInt32(reader["id"]),
                             Firstname = Convert.ToString(reader["firstname"]),
                             Lastname = Convert.ToString(reader["lastname"]),
-                            Birthdate = reader["birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["birthdate"]) : (DateTime?)null,
+                            Birthdate = Convert.ToDateTime(reader["birthdate"]),
                             Gender = (Gender)Convert.ToInt32(reader["gender"]),
                             Username = Convert.ToString(reader["username"]),
                             Email = Convert.ToString(reader["email"]),
@@ -189,7 +189,7 @@ namespace Webanwendung.Models.db
                             ID = Convert.ToInt32(reader["id"]),
                             Firstname = Convert.ToString(reader["firstname"]),
                             Lastname = Convert.ToString(reader["lastname"]),
-                            Birthdate = reader["birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["birthdate"]) : (DateTime?)null,
+                            Birthdate = Convert.ToDateTime(reader["birthdate"]),
                             Gender = (Gender)Convert.ToInt32(reader["gender"]),
                             Username = Convert.ToString(reader["username"]),
                             Email = Convert.ToString(reader["email"]),
@@ -208,6 +208,7 @@ namespace Webanwendung.Models.db
         public List<User> GetAllUsers()
         {
             List<User> users = new List<User>();
+            int i = 0;
 
             try
             {
@@ -225,12 +226,21 @@ namespace Webanwendung.Models.db
                                 ID = Convert.ToInt32(reader["id"]),
                                 Firstname = Convert.ToString(reader["firstname"]),
                                 Lastname = Convert.ToString(reader["lastname"]),
-                                Birthdate = reader["birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["birthdate"]) : (DateTime?)null,
+                                Birthdate = Convert.ToDateTime(reader["birthdate"]),
                                 Gender = (Gender)Convert.ToInt32(reader["gender"]),
                                 Username = Convert.ToString(reader["username"]),
                                 Email = Convert.ToString(reader["email"]),
                             }
                             );
+                            if (Convert.ToBoolean(reader["isAdmin"]))
+                            {
+                                users[i].UserRole = UserRole.admin;
+                            }
+                            else
+                            {
+                                users[i].UserRole = UserRole.registeredUser;
+                            }
+                            i++;
                         }
                         return users;
                     }
