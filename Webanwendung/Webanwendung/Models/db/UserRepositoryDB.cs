@@ -262,13 +262,13 @@ namespace Webanwendung.Models.db
             }
             try
             {
-                MySqlCommand cmdDelete = this._connection.CreateCommand();
-                cmdDelete.CommandText = "DELETE FROM users WHERE ID = @id";
-                cmdDelete.Parameters.AddWithValue("id", idToDelete);
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "DELETE FROM users WHERE ID = @id";
+                cmd.Parameters.AddWithValue("id", idToDelete);
 
-                return cmdDelete.ExecuteNonQuery() == 1;
+                return cmd.ExecuteNonQuery() == 1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

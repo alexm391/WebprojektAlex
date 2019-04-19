@@ -178,9 +178,8 @@ namespace Webanwendung.Models.db
             catch (Exception ex)
             {
                 throw;
-            }
-        
-}
+            }    
+        }
 
         public bool Delete(int idToDelete)
         {
@@ -197,6 +196,43 @@ namespace Webanwendung.Models.db
                 return cmd.ExecuteNonQuery() == 1;
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Booking> GetAllBookings()
+        {
+            List<Booking> bookings = new List<Booking>();
+
+            try
+            {
+                MySqlCommand cmd = this._connection.CreateCommand();
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr";
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            bookings.Add(new Booking
+                            {
+                                ID = Convert.ToInt32(reader["id"]),
+                                StartDate = Convert.ToDateTime(reader["startDate"]),
+                                EndDate = Convert.ToDateTime(reader["endDate"]),
+                                Beds = (Beds)Convert.ToInt32(reader["beds"]),
+                                PriceForStay = Convert.ToDecimal(reader["price"]),
+                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day
+                            }
+                            );
+                        }
+                        return bookings;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
             {
                 throw;
             }

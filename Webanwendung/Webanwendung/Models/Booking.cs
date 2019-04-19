@@ -20,6 +20,8 @@ namespace Webanwendung.Models
 
         public int ID { get; set; }
         public int IdUser { get; set; }
+        public string FirstnameUser { get; set; }
+        public string LastnameUser { get; set; }
         public int RoomNr { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -83,12 +85,14 @@ namespace Webanwendung.Models
             }
         }
 
-        public Booking() : this(-1, 0, 0, DateTime.MaxValue, DateTime.MaxValue, 0, 0m, 0m, 0m, 0m, 0) { }
-        public Booking(int id, int idUser, int roomNr, DateTime startDate, DateTime endDate, Beds beds, 
-            decimal price1, decimal price2, decimal price3, decimal priceForStay, int duration)
+        public Booking() : this(-1, 0, "", "", 0, DateTime.MaxValue, DateTime.MaxValue, 0, 0m, 0m, 0m, 0m, 0) { }
+        public Booking(int id, int idUser, string firstnameUser, string lastnameUser, int roomNr, DateTime startDate, 
+            DateTime endDate, Beds beds, decimal price1, decimal price2, decimal price3, decimal priceForStay, int duration)
         {
             this.ID = id;
             this.IdUser = idUser;
+            this.FirstnameUser = firstnameUser;
+            this.LastnameUser = lastnameUser;
             this.RoomNr = roomNr;
             this.StartDate = startDate;
             this.EndDate = endDate;

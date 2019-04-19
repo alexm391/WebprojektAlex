@@ -56,6 +56,42 @@ namespace Webanwendung.Controllers
         }
 
 
+        // deleteBookings needed
+        [HttpPost]
+        public ActionResult DeleteUser(int idToDelete)
+        {
+            if (IsAdmin())
+            {
+                try
+                {
+                    userRepository = new UserRepositoryDB();
+                    userRepository.Open();
+                    if (userRepository.Delete(idToDelete))
+                    {
+                        return View("Message", new Message("Löschen", "Erfolgreich gelöscht"));
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Löschen", "Löschen nicht erfolgreich"));
+                    }
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Löschen", "Beim Löschen ist ein Fehler aufgetreten"));
+                }
+                finally
+                {
+                    userRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
+            
+        }
+
+
         private bool IsAdmin()
         {
             if ((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true))

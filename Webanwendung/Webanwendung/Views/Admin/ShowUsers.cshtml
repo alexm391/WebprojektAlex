@@ -45,12 +45,12 @@
 
                     @using (Html.BeginForm("ShowBookings", "Admin"))
                     {
-                        <td><input type="hidden" name="idToDelete" value="@u.ID" /></td>
+                        <td><input type="hidden" name="userId" value="@u.ID" /></td>
                         <td><input type="submit" value="Buchungen" /></td>
                     }
                     @if (u.UserRole != UserRole.admin)
                     {
-                        using (Html.BeginForm("Delete", "Admin"))
+                        using (Html.BeginForm("DeleteUser", "Admin"))
                         {
                             <td><input type="hidden" name="idToDelete" value="@u.ID" /></td>
                             <td><input type="submit" value="Löschen" /></td>
