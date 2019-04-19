@@ -241,6 +241,7 @@ namespace Webanwendung.Models.db
                                 users[i].UserRole = UserRole.registeredUser;
                             }
                             i++;
+
                         }
                         return users;
                     }
@@ -248,6 +249,26 @@ namespace Webanwendung.Models.db
                 }
             }
             catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public bool Delete(int idToDelete)
+        {
+            if (idToDelete == 0)
+            {
+                return false;
+            }
+            try
+            {
+                MySqlCommand cmdDelete = this._connection.CreateCommand();
+                cmdDelete.CommandText = "DELETE FROM users WHERE ID = @id";
+                cmdDelete.Parameters.AddWithValue("id", idToDelete);
+
+                return cmdDelete.ExecuteNonQuery() == 1;
+            }
+            catch (Exception)
             {
                 throw;
             }
