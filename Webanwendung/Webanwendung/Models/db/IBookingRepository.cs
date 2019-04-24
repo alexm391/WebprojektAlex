@@ -16,6 +16,7 @@ namespace Webanwendung.Models.db
         List<Booking> GetBookingsOneUser(int userId);
         bool Delete(int idToDelete);
         List<Booking> GetAllBookings();
+        bool SetPrices(List<int> prices);
 
     }
 }

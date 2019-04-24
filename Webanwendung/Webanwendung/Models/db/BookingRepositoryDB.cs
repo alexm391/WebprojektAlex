@@ -250,6 +250,37 @@ namespace Webanwendung.Models.db
             }
         }
 
+        public bool SetPrices(List<int> prices)
+        {
+            if(prices == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                for (int i = 0; i <= 2; i++)
+                {
+                    MySqlCommand cmd = this._connection.CreateCommand();
+                    cmd.CommandText = "update rooms set price = @price where beds = @beds";
+                    cmd.Parameters.AddWithValue("price", prices[i]);
+                    cmd.Parameters.AddWithValue("beds", i++);
+
+                    if(cmd.ExecuteNonQuery() != GetAllRooms(i + 1).Count)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
 
         private List<int> GetAllRooms(int beds)
         {
