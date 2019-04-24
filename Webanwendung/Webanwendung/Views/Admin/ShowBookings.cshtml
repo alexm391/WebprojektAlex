@@ -1,0 +1,76 @@
+﻿@model List<Webanwendung.Models.Booking>
+@using Webanwendung.Models
+
+@{
+    ViewBag.Title = "ShowBookings";
+}
+
+<style>
+    .tableCell {
+        padding-right: 20px;
+    }
+</style>
+
+@if (Convert.ToString(TempData["Message"]) == "oneUser")
+{
+    <h2>Alle Buchungen von @Model[0].User.Firstname @Model[0].User.Lastname</h2>
+}
+else
+{
+    <h2>Alle Buchungen</h2>
+}
+
+@if (Model != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <td class="tableCell">UserID</td>
+                <td class="tableCell">Vorname</td>
+                <td class="tableCell">Nachname</td>
+                <td class="tableCell">BuchungID</td>
+                <td class="tableCell">Anfangsdatum</td>
+                <td class="tableCell">Enddatum</td>
+                <td class="tableCell">Betten</td>
+                <td class="tableCell">Nächte</td>
+                <td class="tableCell">Preis</td>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (Booking b in Model)
+            {
+                <tr>
+                    <td class="tableCell">@b.User.ID</td>
+                    <td class="tableCell">@b.User.Firstname</td>
+                    <td class="tableCell">@b.User.Lastname</td>
+                    <td class="tableCell">@b.ID</td>
+                    <td class="tableCell">@b.StartDate.ToLongDateString()</td>
+                    <td class="tableCell">@b.EndDate.ToLongDateString()</td>
+                    <td class="tableCell">@b.Beds</td>
+                    <td class="tableCell">@b.Duration</td>
+                    <td class="tableCell">@b.PriceForStay</td>
+                    @using (Html.BeginForm("Delete", "Booking"))
+                    {
+                        <td class="tableCell"><input type="hidden" name="idToDelete" value="@b.ID" /></td>
+                        <td class="tableCell"><input type="submit" value="Löschen" /></td>
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">Alle Buchungen</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+}
+else
+{
+    <p>Es gibt für diesen Benutzer Buchungen</p>
+}
+
+
+

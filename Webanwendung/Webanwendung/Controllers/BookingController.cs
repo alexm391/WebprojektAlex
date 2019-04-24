@@ -8,7 +8,7 @@ using Webanwendung.Models;
 
 namespace Webanwendung.Controllers
 {
-    public class BookingController : Controller
+    public class BookingController : BasisController
     {
         private IBookingRepository bookingRepository;
 
@@ -211,7 +211,7 @@ namespace Webanwendung.Controllers
                     bookingRepository.Open();
                     if(Session["id"] != null)
                     {
-                        List<Booking> bookings = bookingRepository.GetBookings(Convert.ToInt32(Session["id"]));
+                        List<Booking> bookings = bookingRepository.GetBookingsOneUser(Convert.ToInt32(Session["id"]));
                         return View(bookings);
                     }
                     else 
@@ -250,7 +250,7 @@ namespace Webanwendung.Controllers
                     else
                     {
                         return View("Message", new Message("Buchung Löschen", "Ihre Buchung konnte nicht gelöscht werden", "Versuchen Sie es später nocheinmal"));
-                    }     
+                    }
                 }
                 catch (Exception)
                 {
@@ -307,18 +307,6 @@ namespace Webanwendung.Controllers
             }
         }
 
-        private bool IsLoggedIn()
-        {
-            if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
-                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
 
     }

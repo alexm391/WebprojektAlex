@@ -139,7 +139,7 @@ namespace Webanwendung.Models.db
             }
         }
 
-        public List<Booking> GetBookings(int userId)
+        public List<Booking> GetBookingsOneUser(int userId)
         {
             if(userId == 0)
             {
@@ -150,7 +150,7 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr where idUser = @id";
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id where b.idUser = @id";
                 cmd.Parameters.AddWithValue("id", userId);
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -166,7 +166,13 @@ namespace Webanwendung.Models.db
                                 EndDate = Convert.ToDateTime(reader["endDate"]),
                                 Beds = (Beds)Convert.ToInt32(reader["beds"]),
                                 PriceForStay = Convert.ToDecimal(reader["price"]),
-                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day
+                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day,
+                                User = new User
+                                {
+                                    ID = Convert.ToInt32(reader["idUser"]),
+                                    Firstname = Convert.ToString(reader["firstname"]),
+                                    Lastname = Convert.ToString(reader["lastname"]),
+                                }                             
                             }
                             );                         
                         }
@@ -208,7 +214,7 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr";
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id";
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -223,7 +229,13 @@ namespace Webanwendung.Models.db
                                 EndDate = Convert.ToDateTime(reader["endDate"]),
                                 Beds = (Beds)Convert.ToInt32(reader["beds"]),
                                 PriceForStay = Convert.ToDecimal(reader["price"]),
-                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day
+                                Duration = Convert.ToDateTime(reader["endDate"]).Day - Convert.ToDateTime(reader["startDate"]).Day,
+                                User = new User
+                                {
+                                    ID = Convert.ToInt32(reader["idUser"]),
+                                    Firstname = Convert.ToString(reader["firstname"]),
+                                    Lastname = Convert.ToString(reader["lastname"]),
+                                }
                             }
                             );
                         }

@@ -13,7 +13,7 @@ namespace Webanwendung.Models.db
         bool Insert(Booking bookingToInsert);
         int CheckAvailability(DateTime startDate, DateTime endDate, int beds);
         List<int> GetPrices();
-        List<Booking> GetBookings(int userId);
+        List<Booking> GetBookingsOneUser(int userId);
         bool Delete(int idToDelete);
         List<Booking> GetAllBookings();
 

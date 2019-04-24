@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Webanwendung.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BasisController
     {
         // GET: Home
         public ActionResult Index()
@@ -28,6 +28,8 @@ namespace Webanwendung.Controllers
         {
             return View();
         }
+
+        
 
     }
 }

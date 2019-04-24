@@ -8,7 +8,7 @@ using Webanwendung.Models;
 
 namespace Webanwendung.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BasisController
     {
         private IUserRepository userRepository;
         private IBookingRepository bookingRepository;
@@ -55,7 +55,6 @@ namespace Webanwendung.Controllers
             }
         }
 
-
         // deleteBookings needed
         [HttpPost]
         public ActionResult DeleteUser(int idToDelete)
@@ -91,18 +90,41 @@ namespace Webanwendung.Controllers
             
         }
 
-
-        private bool IsAdmin()
+        public ActionResult ShowBookings(int userId)
         {
-            if ((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true))
+            if (IsAdmin())
             {
-                return true;
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    List<Booking> bookings;
+                    if(userId == -1)
+                    {
+                        bookings = bookingRepository.GetAllBookings();
+                    }
+                    else
+                    {
+                        TempData["Message"] = "oneUser";
+                        bookings = bookingRepository.GetBookingsOneUser(userId);
+                    }
+                    return View(bookings);
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Alle Buchungen anzeigen", "Beim Anzeigen der Buchungen ist ein Fehler aufgetreten"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
             }
             else
             {
-                return false;
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
             }
         }
+
 
     }
 }

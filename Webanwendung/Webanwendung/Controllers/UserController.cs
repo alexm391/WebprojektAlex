@@ -10,7 +10,7 @@ using MySql.Data.MySqlClient;
 
 namespace Webanwendung.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BasisController
     {
         private IUserRepository userRepository;
 
@@ -328,19 +328,6 @@ namespace Webanwendung.Controllers
             if (user.PasswordConfirmation != user.NewPassword)
             {
                 ModelState.AddModelError("NewPassword", "Die neuen Passwörter stimmen nicht überein");
-            }
-        }
-
-        private bool IsLoggedIn()
-        {
-            if (((Session["isAdmin"] != null) && (Convert.ToBoolean(Session["isAdmin"]) == true)) ||
-                            ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
