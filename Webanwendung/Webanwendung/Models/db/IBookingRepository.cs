@@ -12,11 +12,11 @@ namespace Webanwendung.Models.db
         void Close();
         bool Insert(Booking bookingToInsert);
         int CheckAvailability(DateTime startDate, DateTime endDate, int beds);
-        List<int> GetPrices();
+        List<decimal> GetPrices();
         List<Booking> GetBookingsOneUser(int userId);
         bool Delete(int idToDelete);
         List<Booking> GetAllBookings();
-        bool SetPrices(List<int> prices);
+        bool SetPrices(List<decimal> prices);
 
     }
 }

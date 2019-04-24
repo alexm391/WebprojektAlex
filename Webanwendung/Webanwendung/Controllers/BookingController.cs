@@ -59,7 +59,7 @@ namespace Webanwendung.Controllers
                     Booking b = new Booking();
                     bookingRepository = new BookingRepositoryDB();
                     bookingRepository.Open();
-                    List<int> prices = bookingRepository.GetPrices();
+                    List<decimal> prices = bookingRepository.GetPrices();
                     b.PriceOneBed = prices[0];
                     b.PriceTwoBeds = prices[1];
                     b.PriceThreeBeds = prices[2];
@@ -94,7 +94,7 @@ namespace Webanwendung.Controllers
             {
                 bookingRepository = new BookingRepositoryDB();
                 bookingRepository.Open();
-                List<int> prices = bookingRepository.GetPrices();
+                List<decimal> prices = bookingRepository.GetPrices();
                 bookingDataForm.PriceOneBed = prices[0];
                 bookingDataForm.PriceTwoBeds = prices[1];
                 bookingDataForm.PriceThreeBeds = prices[2];
@@ -151,24 +151,30 @@ namespace Webanwendung.Controllers
         [HttpGet]
         public ActionResult BookingConfirmation()
         {
-            try
+            if (IsLoggedIn())
             {
-                if ((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
+                try
                 {
-                    Booking booking = Session["booking"] as Booking;
-                    SetPriceForStay(booking);
-                    return View(booking);
+                    if ((Session["roomNr"] != null) && (Convert.ToInt32(Session["roomNr"]) > 0))
+                    {
+                        Booking booking = Session["booking"] as Booking;
+                        SetPriceForStay(booking);
+                        return View(booking);
+                    }
+                    else
+                    {
+                        return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+                    return View("Message", new Message("Buchung", "Bei der Verarbeitung ihrer Daten ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
                 }
             }
-            catch (Exception)
+            else
             {
-                return View("Message", new Message("Buchung", "Bei der Verarbeitung ihrer Daten ist ein Fehler aufgetreten", "Versuchen Sie es später nochmal"));
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
             }
-
         }
         [HttpPost]
         public ActionResult BookingConfirmation(Booking booking)
@@ -182,7 +188,7 @@ namespace Webanwendung.Controllers
                 bookingRepository.Open();
                 if (bookingRepository.Insert(booking))
                 {
-                    return View("Message", new Message("Buchung", "Die Buchung war erfolgreich, Sie bekommen in kürze ein email als Bestätigung"));
+                    return View("Message", new Message("Buchung", "Die Buchung war erfolgreich"));
                 }
                 else
                 {

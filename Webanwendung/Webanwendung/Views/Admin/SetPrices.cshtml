@@ -1,0 +1,44 @@
+﻿@model List<decimal>
+
+@{
+    ViewBag.Title = "SetPrices";
+}
+
+<h2>Zimmerpreise ändern</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <thead>
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationSummary()
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.LabelFor(p => p[0], "Preis Ein-Bett Zimmer")</td>
+                <td>@Html.TextBoxFor(p => p[0])</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p[1], "Preis Zwei-Bett Zimmer")</td>
+                <td>@Html.TextBoxFor(p => p[1])</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(p => p[2], "Preis Drei-Bett Zimmer")</td>
+                <td>@Html.TextBoxFor(p => p[2])</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <input type="submit" value="Preise ändern" />
+                    <input type="reset" value="Abbrechen" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+}
+

@@ -44,6 +44,7 @@
                         <li>@Html.ActionLink("" + Session["name"], "ChangeUserData", "User")</li>
                         <li>@Html.ActionLink("Alle User", "ShowUsers", "Admin")</li>
                         <li>@Html.ActionLink("Alle Buchungen", "ShowBookings", "Admin", new { userId = -1 }, null)</li>
+                        <li>@Html.ActionLink("Preise ändern", "SetPrices", "Admin")</li>
                     }
                     else if ((Session["isRegisteredUser"] != null) && (Convert.ToBoolean(Session["isRegisteredUser"]) == true))
                     {

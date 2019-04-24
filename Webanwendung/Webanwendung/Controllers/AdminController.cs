@@ -158,6 +158,78 @@ namespace Webanwendung.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult SetPrices()
+        {
+            if (IsAdmin())
+            {
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    List<decimal> prices = bookingRepository.GetPrices();
+                    return View(prices);
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Preise ändern", "Fehler beim Verarbeiten der Daten"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
+        }
+        [HttpPost]
+        public ActionResult SetPrices(List<decimal> prices)
+        {
+            ValidatePrices(prices);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    if (bookingRepository.SetPrices(prices))
+                    {
+                        return View("Message", new Message("Preise ändern", "Die Preise wurden erfolgreich geändert"));
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Preise ändern", "Die Preise konnten nicht geändert werden"));
+                    }
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Preise ändern", "Die Preise konnten nicht geändert werden"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
+            }
+            else
+            {
+                return View();
+            }
+            
+        }
+
+
+        private void ValidatePrices(List<decimal> prices)
+        {
+            for (int i = 0; i <= 2; i++)
+            {
+                if (prices[i] < 0.0m)
+                {
+                    ModelState.AddModelError("prices[0]", "Die Preise müssen größer null sein");
+                }
+            }                   
+        }
 
     }
 }

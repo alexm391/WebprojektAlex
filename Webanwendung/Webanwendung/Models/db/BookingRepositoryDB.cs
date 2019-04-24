@@ -110,9 +110,9 @@ namespace Webanwendung.Models.db
             }
         }
 
-        public List<int> GetPrices()
+        public List<decimal> GetPrices()
         {
-            List<int> prices = new List<int>();
+            List<decimal> prices = new List<decimal>();
             try
             {
                 for (int i = 1; i <= 3; i++)
@@ -150,7 +150,7 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id where b.idUser = @id";
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id where b.idUser = @id order by b.startDate, b.endDate asc";
                 cmd.Parameters.AddWithValue("id", userId);
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -214,7 +214,7 @@ namespace Webanwendung.Models.db
             try
             {
                 MySqlCommand cmd = this._connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id";
+                cmd.CommandText = "SELECT * FROM bookings b inner join rooms r on b.roomNr = r.roomNr inner join users s on b.idUser = s.id order by b.startDate, b.endDate asc";
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -250,7 +250,7 @@ namespace Webanwendung.Models.db
             }
         }
 
-        public bool SetPrices(List<int> prices)
+        public bool SetPrices(List<decimal> prices)
         {
             if(prices == null)
             {
@@ -264,9 +264,9 @@ namespace Webanwendung.Models.db
                     MySqlCommand cmd = this._connection.CreateCommand();
                     cmd.CommandText = "update rooms set price = @price where beds = @beds";
                     cmd.Parameters.AddWithValue("price", prices[i]);
-                    cmd.Parameters.AddWithValue("beds", i++);
+                    cmd.Parameters.AddWithValue("beds", i+1);
 
-                    if(cmd.ExecuteNonQuery() != GetAllRooms(i + 1).Count)
+                    if(cmd.ExecuteNonQuery() != GetAllRooms(i+1).Count)
                     {
                         return false;
                     }

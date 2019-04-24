@@ -15,7 +15,14 @@
 
 @if ((Convert.ToString(TempData["Message"]) == "oneUser") && (Model != null))
 {
-    <h2>Alle Buchungen von @Model[0].User.Firstname @Model[0].User.Lastname</h2>
+    if (Model[0].User.ID == 1)
+    {
+        <h2>Alle Buchungen des Administrators</h2>
+    }
+    else 
+    {
+        <h2>Alle Buchungen von @Model[0].User.Firstname @Model[0].User.Lastname</h2>
+    }
 }
 else
 {
@@ -71,7 +78,7 @@ else
 }
 else
 {
-    <p>Es gibt für diesen Benutzer Buchungen</p>
+    <p>Es gibt für diesen Benutzer keine Buchungen</p>
 }
 
 
