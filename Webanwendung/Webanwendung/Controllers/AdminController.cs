@@ -14,20 +14,20 @@ namespace Webanwendung.Controllers
         private IBookingRepository bookingRepository;
 
         // only for testing
-        public ActionResult Index()
-        {
-            try
-            {
-                userRepository = new UserRepositoryDB();
-                userRepository.Open();
-                List<User> users = userRepository.GetAllUsers();
-                return View("Message", new Message("kein Fehler", "kein Fehler"));
-            }
-            catch (Exception)
-            {
-                return View("Message", new Message("Fehler", "Fehler"));
-            }   
-        }
+        //public ActionResult Index()
+        //{
+        //    try
+        //    {
+        //        userRepository = new UserRepositoryDB();
+        //        userRepository.Open();
+        //        List<User> users = userRepository.GetAllUsers();
+        //        return View("Message", new Message("kein Fehler", "kein Fehler"));
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return View("Message", new Message("Fehler", "Fehler"));
+        //    }   
+        //}
 
         public ActionResult ShowUsers()
         {
@@ -55,7 +55,6 @@ namespace Webanwendung.Controllers
             }
         }
 
-        // deleteBookings needed
         [HttpPost]
         public ActionResult DeleteUser(int idToDelete)
         {
@@ -90,9 +89,10 @@ namespace Webanwendung.Controllers
             
         }
 
-        public ActionResult ShowBookings(int userId)
+        //[HttpPost]
+        public ActionResult ShowBookings(int? userId)
         {
-            if (IsAdmin())
+            if (IsAdmin() && (userId != null))
             {
                 try
                 {
@@ -106,13 +106,46 @@ namespace Webanwendung.Controllers
                     else
                     {
                         TempData["Message"] = "oneUser";
-                        bookings = bookingRepository.GetBookingsOneUser(userId);
+                        bookings = bookingRepository.GetBookingsOneUser(Convert.ToInt32(userId));
                     }
                     return View(bookings);
                 }
                 catch (Exception)
                 {
                     return View("Message", new Message("Alle Buchungen anzeigen", "Beim Anzeigen der Buchungen ist ein Fehler aufgetreten"));
+                }
+                finally
+                {
+                    bookingRepository.Close();
+                }
+            }
+            else
+            {
+                return View("Message", new Message("URL Fehler", "Die angegebene URL ist ungültig"));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteBooking(int idToDelete)
+        {
+            if (IsAdmin())
+            {
+                try
+                {
+                    bookingRepository = new BookingRepositoryDB();
+                    bookingRepository.Open();
+                    if (bookingRepository.Delete(idToDelete))
+                    {
+                        return View("Message", new Message("Buchung Löschen", "Die Buchung wurde erfolgreich gelöscht"));
+                    }
+                    else
+                    {
+                        return View("Message", new Message("Buchung Löschen", "Die Buchung konnte nicht gelöscht werden"));
+                    }
+                }
+                catch (Exception)
+                {
+                    return View("Message", new Message("Buchung Löschen", "Die Buchung konnte nicht gelöscht werden"));
                 }
                 finally
                 {

@@ -1,4 +1,6 @@
-﻿@model List<Webanwendung.Models.Booking>
+﻿@*admin*@
+
+@model List<Webanwendung.Models.Booking>
 @using Webanwendung.Models
 
 @{
@@ -11,7 +13,7 @@
     }
 </style>
 
-@if (Convert.ToString(TempData["Message"]) == "oneUser")
+@if ((Convert.ToString(TempData["Message"]) == "oneUser") && (Model != null))
 {
     <h2>Alle Buchungen von @Model[0].User.Firstname @Model[0].User.Lastname</h2>
 }
@@ -28,7 +30,7 @@ else
                 <td class="tableCell">UserID</td>
                 <td class="tableCell">Vorname</td>
                 <td class="tableCell">Nachname</td>
-                <td class="tableCell">BuchungID</td>
+                <td class="tableCell">BuchungsID</td>
                 <td class="tableCell">Anfangsdatum</td>
                 <td class="tableCell">Enddatum</td>
                 <td class="tableCell">Betten</td>
@@ -50,7 +52,7 @@ else
                     <td class="tableCell">@b.Beds</td>
                     <td class="tableCell">@b.Duration</td>
                     <td class="tableCell">@b.PriceForStay</td>
-                    @using (Html.BeginForm("Delete", "Booking"))
+                    @using (Html.BeginForm("DeleteBooking", "Admin"))
                     {
                         <td class="tableCell"><input type="hidden" name="idToDelete" value="@b.ID" /></td>
                         <td class="tableCell"><input type="submit" value="Löschen" /></td>

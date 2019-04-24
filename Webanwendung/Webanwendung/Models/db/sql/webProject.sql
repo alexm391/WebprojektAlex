@@ -28,8 +28,8 @@ create table bookings(
     startDate date not null,
     endDate date not null,
     price decimal not null,
-    constraint idUser_FK foreign key(idUser) references users(id),
-	constraint roomNr_FK foreign key(roomNr) references rooms(roomNr),
+    constraint idUser_FK foreign key(idUser) references users(id) on delete cascade,
+	constraint roomNr_FK foreign key(roomNr) references rooms(roomNr) on delete cascade,
 	constraint id_PK primary key(id)
 )engine=InnoDB;
 
